@@ -79,37 +79,17 @@ function importConicet(conicetDict) {
     institucionOrganizadora.value = conicetDict["institucionOrganizadora"];
 
     // AUTORES
-
     let autorTable = conicetDict["autorTable"];
     cargarAutoresAfilicaciones(autorTable);
 
     // ÁREAS DEL CONOCIMIENTO Y PALABRAS CLAVE
 
     // ÁREA DEL CONOCIMIENTO (MÁXIMO TRES)
-    let parts = conicetDict.disciplinarTable.split(" <SEP> ");
-    let [text_0, value_0] = parts[0].match(/(.+) \{(\d+)\}/).slice(1);
-    let [text_0_0, value_0_0] = parts[1].match(/(.+) \{(\d+)\}/).slice(1);
-    let campo_0 = document.getElementsByName("campo_0")[0];
-    campo_0.value = value_0;
-    campo_0.dispatchEvent(new Event("change"));
-    setTimeout(() => {
-        let campo_0_0 = document.getElementsByName("campo_0_0")[0];
-        campo_0_0.value = value_0_0;
-        campo_0_0.dispatchEvent(new Event("change"));
-    }, 1000);
+    let disciplinarTable = conicetDict["disciplinarTable"];
+    cargarDisciplinar(disciplinarTable);
     // PALABRA CLAVE
-    let palabrasClave = conicetDict["palabraTable"].split("<SEP>");
-    let palabraLabel = document.getElementsByName("palabraLabel");
-    let palabraNuevo = document.getElementsByName("palabraNuevo")[0];
-    for (let i = 0; i < palabrasClave.length; i++) {
-        if (i >= palabraLabel.length) {
-            palabraNuevo.click();
-            setTimeout(function () {
-                palabraLabel = document.getElementsByName("palabraLabel");
-            }, 500);
-        }
-        palabraLabel[i].value = palabrasClave[i].trim();
-    }
+    let palabraTable = conicetDict["palabraTable"];
+    cargarPalabrasClave(palabraTable);
 
     // RESUMEN (O ABSTRACT)
     let hdnresumen = document.getElementsByName("hdnresumen")[0];
@@ -147,7 +127,7 @@ function loadFile() {
     fileInput.click();
 }
 
-function cargarAutoresAfilicaciones(autorTable){
+function cargarAutoresAfilicaciones(autorTable) {
     let autorParticipacionLabel = document.getElementsByName("autorParticipacionLabel");
     let autorNuevo = document.getElementsByName("autorNuevo")[0];
     Object.keys(autorTable).forEach((autor, i) => {
@@ -191,6 +171,33 @@ function cargarAutoresAfilicaciones(autorTable){
             });
         }
     });
+}
+
+function cargarDisciplinar(disciplinarTable) {
+    let [text_0, value_0] = disciplinarTable[0].match(/(.+) \{(\d+)\}/).slice(1);
+    let [text_0_0, value_0_0] = disciplinarTable[1].match(/(.+) \{(\d+)\}/).slice(1);
+    let campo_0 = document.getElementsByName("campo_0")[0];
+    campo_0.value = value_0;
+    campo_0.dispatchEvent(new Event("change"));
+    setTimeout(() => {
+        let campo_0_0 = document.getElementsByName("campo_0_0")[0];
+        campo_0_0.value = value_0_0;
+        campo_0_0.dispatchEvent(new Event("change"));
+    }, 1000);
+}
+
+function cargarPalabrasClave(palabraTable) {
+    let palabraLabel = document.getElementsByName("palabraLabel");
+    let palabraNuevo = document.getElementsByName("palabraNuevo")[0];
+    for (let i = 0; i < palabraTable.length; i++) {
+        if (i >= palabraLabel.length) {
+            palabraNuevo.click();
+            setTimeout(function () {
+                palabraLabel = document.getElementsByName("palabraLabel");
+            }, 500);
+        }
+        palabraLabel[i].value = palabraTable[i].trim();
+    }
 }
 
 globalThis.createImportButton = createImportButton;

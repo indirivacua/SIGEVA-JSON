@@ -58,9 +58,7 @@ function exportConicet() {
     conicetDict.autorTable = getAuthorAffiliations(autorTable);
     let campo_0 = document.getElementsByName("campo_0")[0];
     let campo_0_0 = document.getElementsByName("campo_0_0")[0];
-    let text_0 = campo_0.options[campo_0.selectedIndex].text;
-    let text_0_0 = campo_0_0.options[campo_0_0.selectedIndex].text;
-    conicetDict.disciplinarTable = `${text_0} {${campo_0.value}} <SEP> ${text_0_0} {${campo_0_0.value}}`;
+    conicetDict.disciplinarTable = getFields(campo_0, campo_0_0);
     let palabraTable = document.querySelectorAll('#palabraTable input[type="text"][name="palabraLabel"]');
     conicetDict.palabraTable = getKeywords(palabraTable);
     let hdnresumen = document.getElementsByName("hdnresumen")[0];
@@ -110,13 +108,21 @@ function getAuthorAffiliations(organizacionTable) {
     return authorAffiliations;
 }
 
+function getFields(campo_0, campo_0_0) {
+    let text_0 = campo_0.options[campo_0.selectedIndex].text;
+    let text_0_0 = campo_0_0.options[campo_0_0.selectedIndex].text;
+    return [
+        `${text_0} {${campo_0.value}}`,
+        `${text_0_0} {${campo_0_0.value}}`
+    ];
+}
+
 function getKeywords(palabraTable) {
     let keywords = [];
     for (let i = 0; i < palabraTable.length; i++) {
         keywords.push(palabraTable[i].value);
     }
-    let keywordsString = keywords.join(" <SEP> ");
-    return keywordsString;
+    return keywords;
 }
 
 globalThis.createExportButton = createExportButton;
