@@ -80,19 +80,8 @@ function importConicet(conicetDict) {
 
     // AUTORES
 
-    let autores = conicetDict["autorTable"].split(" <SEP> ");
-    let autorParticipacionLabel = document.getElementsByName("autorParticipacionLabel");
-    let autorNuevo = document.getElementsByName("autorNuevo")[0];
-    for (let i = 0; i < autores.length; i++) {
-        if (i >= autorParticipacionLabel.length) {
-            autorNuevo.click();
-            setTimeout(function () {
-                autorParticipacionLabel = document.getElementsByName("autorParticipacionLabel");
-            }, 500);
-        }
-        autorParticipacionLabel[i].value = autores[i].trim();
-    }
-    cargarAfiliaciones(conicetDict);
+    let autorTable = conicetDict["autorTable"];
+    cargarAutoresAfilicaciones(autorTable);
 
     // ÁREAS DEL CONOCIMIENTO Y PALABRAS CLAVE
 
@@ -158,71 +147,50 @@ function loadFile() {
     fileInput.click();
 }
 
-function cargarAfiliaciones(conicetDict) {
-    let afiliaciones = conicetDict.oganizacionTable.split("<SEP>");
-
-    let afiliacionesPorAutor = {};
-
-    // Recorrer cada afiliación
-    afiliaciones.forEach(function (afiliacion) {
-        // Utilizamos una expresión regular para separar el nombre del autor, la afiliación y el ID
-        let regex = /\{(.+?)\}\s(.+?)\s\{(.+?)\}/;
-        let matches = afiliacion.match(regex);
-
-        if (matches) {
-            let autor = matches[1].trim();
-            let organizacion = matches[2].trim();
-            let organizacionId = matches[3].trim();
-
-            // Si el autor no existe aún en el objeto, lo creamos
-            if (!afiliacionesPorAutor[autor]) {
-                afiliacionesPorAutor[autor] = [];
-            }
-
-            // Añadimos la afiliación a la lista del autor
-            afiliacionesPorAutor[autor].push({ organizacion, organizacionId });
-        }
-    });
-
-    // Ahora recorremos los autores en la página para insertar sus respectivas afiliaciones
+function cargarAutoresAfilicaciones(autorTable){
     let autorParticipacionLabel = document.getElementsByName("autorParticipacionLabel");
-
-    for (let i = 0; i < autorParticipacionLabel.length; i++) {
-        let autorActual = autorParticipacionLabel[i].value.trim();
-
-        // Si hay afiliaciones para el autor actual
-        if (afiliacionesPorAutor[autorActual]) {
+    let autorNuevo = document.getElementsByName("autorNuevo")[0];
+    Object.keys(autorTable).forEach((autor, i) => {
+        if (i >= autorParticipacionLabel.length) {
+            autorNuevo.click();
+            autorParticipacionLabel = document.getElementsByName("autorParticipacionLabel");
+        }
+        autorParticipacionLabel[i].value = autor;
+        let afiliaciones = autorTable[autor];
+        if (afiliaciones.length > 0) {
             let autorTable = autorParticipacionLabel[i].closest("table").querySelector("tbody");
-
-            // Insertar cada afiliación de ese autor
-            afiliacionesPorAutor[autorActual].forEach(function (afiliacion) {
-                let nuevaFila = `
-                <tr class="odd">
-                <td colspan="2" style="width:500;border-top: 1px solid #888;">
-                    <div>${afiliacion.organizacion}</div>
-                    <input type="hidden" name="autorOrganizacionLabel" value="${afiliacion.organizacion}">
-                    <input type="hidden" name="autorOrganizacionId" value="${afiliacion.organizacionId}">
-                    <input type="hidden" name="autorParticipacionOrganizacionId" value="">
-                    <input type="hidden" name="autorParticipacionId" value="">
-                    <input type="hidden" name="autorisOtraOrganizacion" value="false">
-                    <input type="hidden" name="autorPaisId" value="">
-                    <input type="hidden" name="autorProvinciaId" value="">
-                    <input type="hidden" name="autorRelacionadaId" value="">
-                    <input type="hidden" name="autorNivel" value="">
-                    <input type="hidden" name="autorRuta" value="${afiliacion.organizacion}">
-                    <input type="hidden" name="autorTipoId" value="">
-                    <input type="hidden" name="autorAffiliationId" value="">
-                </td>
-                <td style="width:30;border-top: 1px solid #888;">
-                    <input type="button" name="autorOrganizacionBorrar" value="Borrar" class="borrar" align="right">
-                </td>
-                </tr>`;
-
-                // Insertar la nueva fila después de la fila del autor correspondiente
-                autorTable.insertAdjacentHTML("beforeend", nuevaFila);
+            afiliaciones.forEach((afiliacion) => {
+                let regex = /(.+?)\s\{(.+?)\}/;
+                let matches = afiliacion.match(regex);
+                if (matches) {
+                    let organizacion = matches[1].trim();
+                    let organizacionId = matches[2].trim();
+                    let nuevaFila = `
+                    <tr class="odd">
+                        <td colspan="2" style="width:500;border-top: 1px solid #888;">
+                            <div>${organizacion}</div>
+                            <input type="hidden" name="autorOrganizacionLabel" value="${organizacion}">
+                            <input type="hidden" name="autorOrganizacionId" value="${organizacionId}">
+                            <input type="hidden" name="autorParticipacionOrganizacionId" value="">
+                            <input type="hidden" name="autorParticipacionId" value="">
+                            <input type="hidden" name="autorisOtraOrganizacion" value="false">
+                            <input type="hidden" name="autorPaisId" value="">
+                            <input type="hidden" name="autorProvinciaId" value="">
+                            <input type="hidden" name="autorRelacionadaId" value="">
+                            <input type="hidden" name="autorNivel" value="">
+                            <input type="hidden" name="autorRuta" value="${organizacion}">
+                            <input type="hidden" name="autorTipoId" value="">
+                            <input type="hidden" name="autorAffiliationId" value="">
+                        </td>
+                        <td style="width:30;border-top: 1px solid #888;">
+                            <input type="button" name="autorOrganizacionBorrar" value="Borrar" class="borrar" align="right">
+                        </td>
+                    </tr>`;
+                    autorTable.insertAdjacentHTML("beforeend", nuevaFila);
+                }
             });
         }
-    }
+    });
 }
 
 globalThis.createImportButton = createImportButton;

@@ -54,10 +54,8 @@ function exportConicet() {
     conicetDict.fechaReunion = fechaReunion.value;
     let institucionOrganizadora = document.getElementsByName("institucionOrganizadora")[0];
     conicetDict.institucionOrganizadora = institucionOrganizadora.value;
-    let autorTable = document.querySelectorAll('#autorTable input[type="text"][name="autorParticipacionLabel"]');
-    conicetDict.autorTable = getAuthorNames(autorTable);
-    let oganizacionTable = document.querySelectorAll("#autorTable tr");
-    conicetDict.oganizacionTable = getAffiliationsWithIds(oganizacionTable);
+    let autorTable = document.querySelectorAll("#autorTable tr");
+    conicetDict.autorTable = getAuthorAffiliations(autorTable);
     let campo_0 = document.getElementsByName("campo_0")[0];
     let campo_0_0 = document.getElementsByName("campo_0_0")[0];
     let text_0 = campo_0.options[campo_0.selectedIndex].text;
@@ -87,38 +85,29 @@ function download(data, filename, type) {
     }, 0);
 }
 
-function getAuthorNames(autorTable) {
-    let authorNames = [];
-    for (let i = 0; i < autorTable.length; i++) {
-        authorNames.push(autorTable[i].value);
-    }
-    let authorNamesString = authorNames.join(" <SEP> ");
-    // Trim the trailing " and " from the string
-    if (authorNamesString.endsWith(" <SEP> ")) {
-        authorNamesString = authorNamesString.substring(0, authorNamesString.length - 5);
-    }
-    return authorNamesString;
-}
-
-function getAffiliationsWithIds(organizacionTable) {
-    let affiliationsWithIds = [];
+function getAuthorAffiliations(organizacionTable) {
+    let authorAffiliations = {};
     for (let i = 0; i < organizacionTable.length; i++) {
-        let authorName = organizacionTable[i].querySelector('input[type="text"][name="autorParticipacionLabel"]');
-        if (authorName) {
+        let authorNameInput = organizacionTable[i].querySelector('input[type="text"][name="autorParticipacionLabel"]');
+        if (authorNameInput) {
+            let authorName = authorNameInput.value;
+            // Initialize the array for the author if not done yet
+            if (!authorAffiliations[authorName]) {
+                authorAffiliations[authorName] = [];
+            }
             let organizacionLabels = organizacionTable[i].querySelectorAll('input[type="hidden"][name="autorOrganizacionLabel"]');
             let organizacionIds = organizacionTable[i].querySelectorAll('input[type="hidden"][name="autorOrganizacionId"]');
-            // Iterate over all the organizations associated with an author
+            // Iterate over all organizations for the current author
             for (let j = 0; j < organizacionLabels.length; j++) {
-                let organizacionLabel = organizacionLabels[j];
-                let organizacionId = organizacionIds[j];
-                if (organizacionLabel && organizacionId) {
-                    let organizacionText = `{${authorName.value}} ${organizacionLabel.value} {${organizacionId.value}}`;
-                    affiliationsWithIds.push(organizacionText);
-                }
+                let organizacionLabel = organizacionLabels[j].value;
+                let organizacionId = organizacionIds[j].value;
+                let organizacionText = `${organizacionLabel} {${organizacionId}}`;
+                // Add the organization info to the author's array
+                authorAffiliations[authorName].push(organizacionText);
             }
         }
     }
-    return affiliationsWithIds.join(" <SEP> ");
+    return authorAffiliations;
 }
 
 function getKeywords(palabraTable) {
