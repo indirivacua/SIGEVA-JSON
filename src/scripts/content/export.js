@@ -9,7 +9,7 @@ function createExportButton() {
     return exportButton;
 }
 
-function exportConicet() {
+async function exportConicet() {
     let conicetDict = {};
 
     let tipoTrabajo = document.getElementsByName("tipoTrabajo")[0];
@@ -63,6 +63,10 @@ function exportConicet() {
     conicetDict.palabraTable = getKeywords(palabraTable);
     let hdnresumen = document.getElementsByName("hdnresumen")[0];
     conicetDict.hdnresumen = hdnresumen.value;
+    let filePath = document.querySelector('input[name="linkFullText"]').value;
+    let downloadUrl =
+        `https://si.conicet.gov.ar/eva/archivosAdjuntos.do?archivo=fullText&elementoId=${filePath.split('/')[4]}`;
+    conicetDict.fullTextBase64 = await encode(downloadUrl);
 
     let json = JSON.stringify(conicetDict, null, 4);
 
@@ -123,6 +127,25 @@ function getKeywords(palabraTable) {
         keywords.push(palabraTable[i].value);
     }
     return keywords;
+}
+
+async function encode(url) {
+    try {
+        const response = await fetch(url);
+        const blob = await response.blob();
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onloadend = function() {
+                const base64 = reader.result.split(',')[1]; // Remove the Base64 prefix
+                resolve(base64);
+            };
+            reader.onerror = reject;
+            reader.readAsDataURL(blob); // Read the blob as Base64
+        });
+    } catch (error) {
+        console.error("Error retrieving or encoding the file:", error);
+        throw error;
+    }
 }
 
 globalThis.createExportButton = createExportButton;

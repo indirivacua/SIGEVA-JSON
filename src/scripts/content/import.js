@@ -94,6 +94,9 @@ function importConicet(conicetDict) {
     // RESUMEN (O ABSTRACT)
     let hdnresumen = document.getElementsByName("hdnresumen")[0];
     hdnresumen.value = conicetDict["hdnresumen"];
+
+    // FULL TEXT O TEXTO COMPLETO
+    decode(conicetDict["fullTextBase64"], conicetDict["produccion"]);
 }
 
 function loadFile() {
@@ -112,7 +115,6 @@ function loadFile() {
                 try {
                     // Parsear el contenido del archivo como JSON
                     conicetDict = JSON.parse(event.target.result);
-                    console.log(conicetDict);
                     importConicet(conicetDict);
                 } catch (error) {
                     console.error("Error al parsear el JSON:", error);
@@ -198,6 +200,23 @@ function cargarPalabrasClave(palabraTable) {
         }
         palabraLabel[i].value = palabraTable[i].trim();
     }
+}
+
+function decode(fullTextBase64, fileName) {
+    const byteCharacters = atob(fullTextBase64); // Decode Base64
+    const byteNumbers = new Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+
+    const byteArray = new Uint8Array(byteNumbers);
+    const fileBlob = new Blob([byteArray], { type: "application/pdf" });
+    const file = new File([fileBlob], `${fileName}.pdf`, { type: "application/pdf" });
+
+    const inputFile = document.querySelector('input[name="theFile"]');
+    const dataTransfer = new DataTransfer();
+    dataTransfer.items.add(file);
+    inputFile.files = dataTransfer.files;
 }
 
 globalThis.createImportButton = createImportButton;
