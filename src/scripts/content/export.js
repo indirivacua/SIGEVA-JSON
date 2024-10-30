@@ -63,9 +63,9 @@ async function exportConicet() {
     conicetDict.palabraTable = getKeywords(palabraTable);
     let hdnresumen = document.getElementsByName("hdnresumen")[0];
     conicetDict.hdnresumen = hdnresumen.value;
-    let filePath = document.querySelector('input[name="linkFullText"]').value;
-    let downloadUrl =
-        `https://si.conicet.gov.ar/eva/archivosAdjuntos.do?archivo=fullText&elementoId=${filePath.split('/')[4]}`;
+    let linkFullText = document.querySelector('a[href*="archivosAdjuntos.do"]');
+    let baseUrl = window.location.href.split('/').slice(0, 4).join('/');
+    let downloadUrl = `${baseUrl}/${linkFullText.getAttribute('href')}`;
     conicetDict.fullTextBase64 = await encode(downloadUrl);
 
     let json = JSON.stringify(conicetDict, null, 4);
@@ -129,9 +129,9 @@ function getKeywords(palabraTable) {
     return keywords;
 }
 
-async function encode(url) {
+async function encode(downloadUrl) {
     try {
-        const response = await fetch(url);
+        const response = await fetch(downloadUrl);
         const blob = await response.blob();
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
