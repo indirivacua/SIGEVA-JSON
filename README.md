@@ -1,5 +1,9 @@
 # SIGEVA-JSON
 
+<p align="center">
+    <a href="https://chromewebstore.google.com/detail/kgbfmcnmibhkakpepfcmoolakpdmpcjp"><img src="releases/SVG (with border).svg" alt="Get Copy-n-Paste for Chromium" height="75px"></a>
+</p>
+
 La extensión fue probada solo en navegadores basados en Chromium, igual debería funcionar (mínimanente) en Firefox también.
 
 ## Instalación

@@ -1,15 +1,35 @@
-function createExportButton() {
+function createExportButton(pubType) {
     let exportButton = document.createElement("input");
     exportButton.type = "submit";
     exportButton.name = "btnExport";
     exportButton.value = "Exportar JSON";
     exportButton.className = "CformBoton";
     exportButton.style.backgroundColor = "#ffd000";
-    exportButton.onclick = exportConicet;
+    switch (pubType) {
+        case "bcoProduccionListaPublicacionCongreso":
+            exportButton.onclick = () => exportConicetCongress();
+            break;
+        case "bcoProduccionListaPublicacionCapituloLibro":
+            exportButton.onclick = () => exportConicetChapter();
+            break;
+        case "bcoProduccionArticuloPublicacion":
+            exportButton.onclick = () => exportConicetJournal();
+            break;
+        default:
+            break;
+    }
     return exportButton;
 }
 
-async function exportConicet() {
+function exportConicetChapter() {
+
+}
+
+function exportConicetJournal() {
+    alert("Esta función aún no está implementada. Próximamente disponible.");
+}
+
+async function exportConicetCongress() {
     let conicetDict = {};
 
     let tipoTrabajo = document.getElementsByName("tipoTrabajo")[0];

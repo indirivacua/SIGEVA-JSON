@@ -1,4 +1,4 @@
-function createImportButton() {
+function createImportButton(pubType) {
     let importButton = document.createElement("input");
     importButton.type = "button";
     importButton.name = "btnImport";
@@ -8,11 +8,31 @@ function createImportButton() {
     importButton.style.position = "absolute";
     importButton.style.top = "1";
     importButton.style.right = "5";
-    importButton.onclick = loadFile;
+    switch (pubType) {
+        case "bcoProduccionListaPublicacionCongreso":
+            importButton.onclick = () => loadFile(importConicetCongress);
+            break;
+        case "bcoProduccionListaPublicacionCapituloLibro":
+            importButton.onclick = () => loadFile(importConicetChatper);
+            break;
+        case "bcoPrecargarArticulo":
+            importButton.onclick = () => loadFile(importConicetJournal);
+            break;
+        default:
+            break;
+    }
     return importButton;
 }
 
-function importConicet(conicetDict) {
+function importConicetChatper(conicetDict) {
+
+}
+
+function importConicetJournal(conicetDict) {
+    alert("Esta función aún no está implementada. Próximamente disponible.");
+}
+
+function importConicetCongress(conicetDict) {
     // DATOS BÁSICOS
 
     // Tipo de trabajo:
@@ -99,7 +119,7 @@ function importConicet(conicetDict) {
     decode(conicetDict["fullTextBase64"], conicetDict["produccion"]);
 }
 
-function loadFile() {
+function loadFile(callback) {
     let fileInput = document.createElement("input");
     fileInput.type = "file";
     fileInput.id = "file_input";
@@ -115,7 +135,7 @@ function loadFile() {
                 try {
                     // Parsear el contenido del archivo como JSON
                     conicetDict = JSON.parse(event.target.result);
-                    importConicet(conicetDict);
+                    callback(conicetDict);
                 } catch (error) {
                     console.error("Error al parsear el JSON:", error);
                 }
