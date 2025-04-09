@@ -21,14 +21,6 @@ function createExportButton(pubType) {
     return exportButton;
 }
 
-function exportConicetChapter() {
-
-}
-
-function exportConicetJournal() {
-    alert("Esta función aún no está implementada. Próximamente disponible.");
-}
-
 async function exportConicetCongress() {
     let conicetDict = {};
 
@@ -75,7 +67,7 @@ async function exportConicetCongress() {
     let institucionOrganizadora = document.getElementsByName("institucionOrganizadora")[0];
     conicetDict.institucionOrganizadora = institucionOrganizadora.value;
     let autorTable = document.querySelectorAll("#autorTable tr");
-    conicetDict.autorTable = getAuthorAffiliations(autorTable);
+    conicetDict.autorTable = getAffiliations(autorTable, "autor");
     let campo_0 = document.getElementsByName("campo_0")[0];
     let campo_0_0 = document.getElementsByName("campo_0_0")[0];
     conicetDict.disciplinarTable = getFields(campo_0, campo_0_0);
@@ -89,8 +81,77 @@ async function exportConicetCongress() {
     conicetDict.fullTextBase64 = await encode(downloadUrl);
 
     let json = JSON.stringify(conicetDict, null, 4);
-
     download(json, `${conicetDict.produccion}.json`, "application/json");
+}
+
+async function exportConicetChapter() {
+    let conicetDict = {};
+
+    let tipoParteLibro = document.getElementsByName("tipoParteLibro")[0];
+    conicetDict.tipoParteLibro = tipoParteLibro.value;
+    let tituloLibro = document.getElementsByName("tituloLibro")[0];
+    conicetDict.tituloLibro = tituloLibro.value;
+    let produccion = document.getElementsByName("produccion")[0];
+    conicetDict.produccion = produccion.value;
+    let isbn = document.getElementsByName("isbn")[0];
+    conicetDict.isbn = isbn.value;
+    let idioma = document.getElementsByName("idioma")[0];
+    conicetDict.idioma = idioma.value;
+    let volumen = document.getElementsByName("volumen")[0];
+    conicetDict.volumen = volumen.value;
+    let tomo = document.getElementsByName("tomo")[0];
+    conicetDict.tomo = tomo.value;
+    let numero = document.getElementsByName("numero")[0];
+    conicetDict.numero = numero.value;
+    let totalPaginasLibro = document.getElementsByName("totalPaginasLibro")[0];
+    conicetDict.totalPaginasLibro = totalPaginasLibro.value;
+    let paginaInicial = document.getElementsByName("paginaInicial")[0];
+    conicetDict.paginaInicial = paginaInicial.value;
+    let paginaFinal = document.getElementsByName("paginaFinal")[0];
+    conicetDict.paginaFinal = paginaFinal.value;
+    let publicado = document.querySelector('input[name="publicado"]:checked');
+    conicetDict.publicado = publicado ? publicado.value : "";
+    let referato = document.querySelector('input[name="referato"]:checked');
+    conicetDict.referato = referato ? referato.value : "";
+    let pais = document.getElementsByName("pais")[0];
+    conicetDict.pais = pais.value;
+    let lugarEdicion = document.getElementsByName("lugarEdicion")[0];
+    conicetDict.lugarEdicion = lugarEdicion.value;
+    let editorial = document.getElementsByName("editorial")[0];
+    conicetDict.editorial = editorial.value;
+    let anioPublica = document.getElementsByName("anioPublica")[0];
+    conicetDict.anioPublica = anioPublica.value;
+    let tipoSoporteChecked0 = document.getElementsByName("tipoSoporteChecked")[0];
+    conicetDict.tipoSoporteChecked0 = tipoSoporteChecked0.checked;
+    let tipoSoporteChecked1 = document.getElementsByName("tipoSoporteChecked")[1];
+    conicetDict.tipoSoporteChecked1 = tipoSoporteChecked1.checked;
+    let web = document.getElementsByName("web")[0];
+    conicetDict.web = web.value;
+    conicetDict.isAutor = document.getElementsByName("isAutor")[0].checked;
+    conicetDict.isEditor = document.getElementsByName("isEditor")[0].checked;
+    conicetDict.isRevisor = document.getElementsByName("isRevisor")[0].checked;
+    let autorTable = document.querySelectorAll("#autorTable tr");
+    conicetDict.autorTable = getAffiliations(autorTable, "autor");
+    let compiladorTable = document.querySelectorAll("#compiladorTable tr.odd");
+    conicetDict.compiladorTable = getAffiliations(compiladorTable, "compilador");
+    let campo_0 = document.getElementsByName("campo_0")[0];
+    let campo_0_0 = document.getElementsByName("campo_0_0")[0];
+    conicetDict.disciplinarTable = getFields(campo_0, campo_0_0);
+    let palabraTable = document.querySelectorAll('#palabraTable input[name="palabraLabel"]');
+    conicetDict.palabraTable = getKeywords(palabraTable);
+    let hdnresumen = document.getElementsByName("hdnresumen")[0];
+    conicetDict.hdnresumen = hdnresumen.value;
+    let linkFullText = document.querySelector('a[href*="archivosAdjuntos.do"]');
+    let baseUrl = window.location.href.split('/').slice(0, 4).join('/');
+    let downloadUrl = `${baseUrl}/${linkFullText.getAttribute('href')}`;
+    conicetDict.fullTextBase64 = await encode(downloadUrl);
+
+    let json = JSON.stringify(conicetDict, null, 4);
+    download(json, `${conicetDict.produccion}.json`, "application/json");
+}
+
+async function exportConicetJournal() {
+    alert("Esta función aún no está implementada. Próximamente disponible.");
 }
 
 function download(data, filename, type) {
@@ -107,18 +168,18 @@ function download(data, filename, type) {
     }, 0);
 }
 
-function getAuthorAffiliations(organizacionTable) {
+function getAffiliations(organizacionTable, entityType) {
     let authorAffiliations = {};
     for (let i = 0; i < organizacionTable.length; i++) {
-        let authorNameInput = organizacionTable[i].querySelector('input[type="text"][name="autorParticipacionLabel"]');
+        let authorNameInput = organizacionTable[i].querySelector(`input[type="text"][name="${entityType}ParticipacionLabel"]`);
         if (authorNameInput) {
             let authorName = authorNameInput.value;
             // Initialize the array for the author if not done yet
             if (!authorAffiliations[authorName]) {
                 authorAffiliations[authorName] = [];
             }
-            let organizacionLabels = organizacionTable[i].querySelectorAll('input[type="hidden"][name="autorOrganizacionLabel"]');
-            let organizacionIds = organizacionTable[i].querySelectorAll('input[type="hidden"][name="autorOrganizacionId"]');
+            let organizacionLabels = organizacionTable[i].querySelectorAll(`input[type="hidden"][name="${entityType}OrganizacionLabel"]`);
+            let organizacionIds = organizacionTable[i].querySelectorAll(`input[type="hidden"][name="${entityType}OrganizacionId"]`);
             // Iterate over all organizations for the current author
             for (let j = 0; j < organizacionLabels.length; j++) {
                 let organizacionLabel = organizacionLabels[j].value;

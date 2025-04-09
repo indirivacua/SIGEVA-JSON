@@ -25,7 +25,56 @@ function createImportButton(pubType) {
 }
 
 function importConicetChatper(conicetDict) {
-
+    let tipoParteLibro = document.getElementsByName("tipoParteLibro")[0];
+    tipoParteLibro.value = conicetDict["tipoParteLibro"];
+    let tituloLibro = document.getElementsByName("tituloLibro")[0];
+    tituloLibro.value = conicetDict["tituloLibro"];
+    let produccion = document.getElementsByName("produccion")[0];
+    produccion.value = conicetDict["produccion"];
+    let isbn = document.getElementsByName("isbn")[0];
+    isbn.value = conicetDict["isbn"];
+    let idioma = document.getElementsByName("idioma")[0];
+    idioma.value = conicetDict["idioma"];
+    let volumen = document.getElementsByName("volumen")[0];
+    volumen.value = conicetDict["volumen"];
+    let tomo = document.getElementsByName("tomo")[0];
+    tomo.value = conicetDict["tomo"];
+    let numero = document.getElementsByName("numero")[0];
+    numero.value = conicetDict["numero"];
+    let totalPaginasLibro = document.getElementsByName("totalPaginasLibro")[0];
+    totalPaginasLibro.value = conicetDict["totalPaginasLibro"];
+    let paginaInicial = document.getElementsByName("paginaInicial")[0];
+    paginaInicial.value = conicetDict["paginaInicial"];
+    let paginaFinal = document.getElementsByName("paginaFinal")[0];
+    paginaFinal.value = conicetDict["paginaFinal"];
+    document.querySelector(`input[name="publicado"][value="${conicetDict["publicado"]}"]`).checked = true;
+    document.querySelector(`input[name="referato"][value="${conicetDict["referato"]}"]`).checked = true;
+    let pais = document.getElementsByName("pais")[0];
+    pais.value = conicetDict["pais"];
+    let lugarEdicion = document.getElementsByName("lugarEdicion")[0];
+    lugarEdicion.value = conicetDict["lugarEdicion"];
+    let editorial = document.getElementsByName("editorial")[0];
+    editorial.value = conicetDict["editorial"];
+    let anioPublica = document.getElementsByName("anioPublica")[0];
+    anioPublica.value = conicetDict["anioPublica"];
+    document.getElementsByName("tipoSoporteChecked")[0].checked = conicetDict["tipoSoporteChecked0"];
+    document.getElementsByName("tipoSoporteChecked")[1].checked = conicetDict["tipoSoporteChecked1"];
+    let web = document.getElementsByName("web")[0];
+    web.value = conicetDict["web"];
+    document.getElementsByName("isAutor")[0].checked = conicetDict["isAutor"];
+    document.getElementsByName("isEditor")[0].checked = conicetDict["isEditor"];
+    document.getElementsByName("isRevisor")[0].checked = conicetDict["isRevisor"];
+    let autorTable = conicetDict["autorTable"];
+    cargarAutoresAfilicaciones(autorTable, "autor");
+    let compiladorTable = conicetDict["compiladorTable"];
+    cargarCompiladoresAfilicaciones(compiladorTable, "compilador");
+    let disciplinarTable = conicetDict["disciplinarTable"];
+    cargarDisciplinar(disciplinarTable);
+    let palabraTable = conicetDict["palabraTable"];
+    cargarPalabrasClave(palabraTable);
+    let hdnresumen = document.getElementsByName("hdnresumen")[0];
+    hdnresumen.value = conicetDict["hdnresumen"];
+    decode(conicetDict["fullTextBase64"], conicetDict["produccion"]);
 }
 
 function importConicetJournal(conicetDict) {
@@ -33,89 +82,56 @@ function importConicetJournal(conicetDict) {
 }
 
 function importConicetCongress(conicetDict) {
-    // DATOS BÁSICOS
-
-    // Tipo de trabajo:
     let tipoTrabajo = document.getElementsByName("tipoTrabajo")[0];
     tipoTrabajo.value = conicetDict["tipoTrabajo"];
-    // Título de trabajo:
     let produccion = document.getElementsByName("produccion")[0];
     produccion.value = conicetDict["produccion"];
-    // Idioma:
     let idioma = document.getElementsByName("idioma")[0];
     idioma.value = conicetDict["idioma"];
-    // Tipo de publicación: y Título de la/el revista/libro:
     let tipoPublicacion = document.getElementsByName("tipoPublicacion")[0];
     tipoPublicacion.value = conicetDict["tipoPublicacion"];
     let tituloPublicacion = document.getElementsByName("tituloPublicacion")[0];
     tituloPublicacion.value = conicetDict["tituloPublicacion"];
-    // ISSN/ISBN:
     let issnIsbn = document.getElementsByName("issnIsbn")[0];
     issnIsbn.value = conicetDict["issnIsbn"];
-    // País de edición:
     let paisEdicion = document.getElementsByName("paisEdicion")[0];
     paisEdicion.value = conicetDict["paisEdicion"];
-    // Ciudad de la editorial:
     let lugarPublicacion = document.getElementsByName("lugarPublicacion")[0];
     lugarPublicacion.value = conicetDict["lugarPublicacion"];
-    // Editorial:
     let editorial = document.getElementsByName("editorial")[0];
     editorial.value = conicetDict["editorial"];
-    // Año de publicación:
     let anioPublica = document.getElementsByName("anioPublica")[0];
     anioPublica.value = conicetDict["anioPublica"];
-    // SOPORTE Y/O MEDIO DE DIFUSIÓN (URL)
     let tipoSoporteChecked0 = document.getElementsByName("tipoSoporteChecked")[0];
     tipoSoporteChecked0.checked = conicetDict["tipoSoporteChecked0"];
     let tipoSoporteChecked1 = document.getElementsByName("tipoSoporteChecked")[1];
     tipoSoporteChecked1.checked = conicetDict["tipoSoporteChecked1"];
     let web = document.getElementsByName("web")[0];
     web.value = conicetDict["web"];
-
-    // DATOS DEL EVENTO
-
-    // Nombre del evento:
     let reunionCientifica = document.getElementsByName("reunionCientifica")[0];
     reunionCientifica.value = conicetDict["reunionCientifica"];
-    // Tipo de evento:
     let tipoReunion = document.getElementsByName("tipoReunion")[0];
     tipoReunion.value = conicetDict["tipoReunion"];
-    // Alcance geográfico:
     let alcanceNacional = document.getElementsByName("alcanceNacional")[0];
     alcanceNacional.checked = conicetDict["alcanceNacional"];
     let alcanceInternacional = document.getElementsByName("alcanceInternacional")[0];
     alcanceInternacional.checked = conicetDict["alcanceInternacional"];
-    // País del evento:
     let paisEvento = document.getElementsByName("paisEvento")[0];
     paisEvento.value = conicetDict["paisEvento"];
-    // Ciudad del evento:
     let lugarReunion = document.getElementsByName("lugarReunion")[0];
     lugarReunion.value = conicetDict["lugarReunion"];
-    // Fecha del evento:
     let fechaReunion = document.getElementsByName("fechaReunion")[0];
     fechaReunion.value = conicetDict["fechaReunion"];
-    // Institución organizadora:
     let institucionOrganizadora = document.getElementsByName("institucionOrganizadora")[0];
     institucionOrganizadora.value = conicetDict["institucionOrganizadora"];
-
-    // AUTORES
     let autorTable = conicetDict["autorTable"];
     cargarAutoresAfilicaciones(autorTable);
-
-    // ÁREAS DEL CONOCIMIENTO Y PALABRAS CLAVE
-
-    // ÁREA DEL CONOCIMIENTO (MÁXIMO TRES)
     let disciplinarTable = conicetDict["disciplinarTable"];
     cargarDisciplinar(disciplinarTable);
-    // PALABRA CLAVE
     let palabraTable = conicetDict["palabraTable"];
     cargarPalabrasClave(palabraTable);
-
-    // RESUMEN (O ABSTRACT)
     let hdnresumen = document.getElementsByName("hdnresumen")[0];
     hdnresumen.value = conicetDict["hdnresumen"];
-
-    // FULL TEXT O TEXTO COMPLETO
     decode(conicetDict["fullTextBase64"], conicetDict["produccion"]);
 }
 
@@ -149,13 +165,13 @@ function loadFile(callback) {
     fileInput.click();
 }
 
-function cargarAutoresAfilicaciones(autorTable) {
-    let autorParticipacionLabel = document.getElementsByName("autorParticipacionLabel");
-    let autorNuevo = document.getElementsByName("autorNuevo")[0];
+function cargarAutoresAfilicaciones(autorTable, entityType) {
+    let autorParticipacionLabel = document.getElementsByName(`${entityType}ParticipacionLabel`);
+    let autorNuevo = document.getElementsByName(`${entityType}Nuevo`)[0];
     Object.keys(autorTable).forEach((autor, i) => {
         if (i >= autorParticipacionLabel.length) {
             autorNuevo.click();
-            autorParticipacionLabel = document.getElementsByName("autorParticipacionLabel");
+            autorParticipacionLabel = document.getElementsByName(`${entityType}ParticipacionLabel`);
         }
         autorParticipacionLabel[i].value = autor;
         let afiliaciones = autorTable[autor];
@@ -171,25 +187,59 @@ function cargarAutoresAfilicaciones(autorTable) {
                     <tr class="odd">
                         <td colspan="2" style="width:500;border-top: 1px solid #888;">
                             <div>${organizacion}</div>
-                            <input type="hidden" name="autorOrganizacionLabel" value="${organizacion}">
-                            <input type="hidden" name="autorOrganizacionId" value="${organizacionId}">
-                            <input type="hidden" name="autorParticipacionOrganizacionId" value="">
-                            <input type="hidden" name="autorParticipacionId" value="">
-                            <input type="hidden" name="autorisOtraOrganizacion" value="false">
-                            <input type="hidden" name="autorPaisId" value="">
-                            <input type="hidden" name="autorProvinciaId" value="">
-                            <input type="hidden" name="autorRelacionadaId" value="">
-                            <input type="hidden" name="autorNivel" value="">
-                            <input type="hidden" name="autorRuta" value="${organizacion}">
-                            <input type="hidden" name="autorTipoId" value="">
-                            <input type="hidden" name="autorAffiliationId" value="">
+                            <input type="hidden" name="${entityType}OrganizacionLabel" value="${organizacion}">
+                            <input type="hidden" name="${entityType}OrganizacionId" value="${organizacionId}">
+                            <input type="hidden" name="${entityType}ParticipacionOrganizacionId" value="">
+                            <input type="hidden" name="${entityType}ParticipacionId" value="">
+                            <input type="hidden" name="${entityType}isOtraOrganizacion" value="false">
+                            <input type="hidden" name="${entityType}PaisId" value="">
+                            <input type="hidden" name="${entityType}ProvinciaId" value="">
+                            <input type="hidden" name="${entityType}RelacionadaId" value="">
+                            <input type="hidden" name="${entityType}Nivel" value="">
+                            <input type="hidden" name="${entityType}Ruta" value="${organizacion}">
+                            <input type="hidden" name="${entityType}TipoId" value="">
+                            <input type="hidden" name="${entityType}AffiliationId" value="">
                         </td>
                         <td style="width:30;border-top: 1px solid #888;">
-                            <input type="button" name="autorOrganizacionBorrar" value="Borrar" class="borrar" align="right">
+                            <input type="button" name="${entityType}OrganizacionBorrar" value="Borrar" class="borrar" align="right">
                         </td>
                     </tr>`;
                     autorTable.insertAdjacentHTML("beforeend", nuevaFila);
                 }
+            });
+        }
+    });
+}
+
+function cargarCompiladoresAfilicaciones(compiladorTable) {
+    let compiladorParticipacionLabel = document.getElementsByName("compiladorParticipacionLabel");
+    let compiladorNuevo = document.getElementsByName("compiladorNuevo")[0];
+
+    Object.keys(compiladorTable).forEach((compilador, i) => {
+        if (i >= compiladorParticipacionLabel.length) {
+            compiladorNuevo.click();
+            compiladorParticipacionLabel = document.getElementsByName("compiladorParticipacionLabel");
+        }
+        compiladorParticipacionLabel[i].value = compilador;
+
+        let afiliaciones = compiladorTable[compilador];
+        if (afiliaciones.length > 0) {
+            let tabla = compiladorParticipacionLabel[i].closest("table").querySelector("tbody");
+            afiliaciones.forEach(afiliacion => {
+                let [organizacion, organizacionId] = afiliacion.split(" {").map(s => s.replace("}", ""));
+                let filaHTML = `
+                <tr class="odd">
+                    <td colspan="2" style="width:500;border-top: 1px solid #888;">
+                        <div>${organizacion}</div>
+                        <input type="hidden" name="compiladorOrganizacionLabel" value="${organizacion}">
+                        <input type="hidden" name="compiladorOrganizacionId" value="${organizacionId}">
+                        <!-- Resto de campos ocultos -->
+                    </td>
+                    <td style="width:30;border-top: 1px solid #888;">
+                        <input type="button" value="Borrar" class="borrar">
+                    </td>
+                </tr>`;
+                tabla.insertAdjacentHTML("beforeend", filaHTML);
             });
         }
     });
