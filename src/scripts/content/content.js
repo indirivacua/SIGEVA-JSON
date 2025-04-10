@@ -3,8 +3,7 @@ pubType = extractPublicationType(currentUrl);
 
 let datosBasicosTd = document.querySelector('td.CformRowHeader');
 if (datosBasicosTd
-    && !currentUrl.includes("action=Editar")
-    && (!datosBasicosTd.textContent.includes("Ingresar el DOI o ISSN"))) {
+    && !currentUrl.includes("action=Editar")) {
     let importButton = globalThis.createImportButton(pubType);
     datosBasicosTd.style.position = "relative"; // Necesario para la superposición
     datosBasicosTd.appendChild(importButton);

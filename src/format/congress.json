@@ -1,90 +1,133 @@
 {
     "tipoTrabajo": {
       "query": "select[name='tipoTrabajo']",
-      "value": "value"
+      "value": "value",
+      "single": true
     },
     "produccion": {
       "query": "input[name='produccion']",
-      "value": "value"
+      "value": "value",
+      "single": true
     },
     "idioma": {
       "query": "select[name='idioma']",
-      "value": "value"
+      "value": "value",
+      "single": true
     },
     "tituloPublicacion": {
       "query": "input[name='tituloPublicacion']",
-      "value": "value"
+      "value": "value",
+      "single": true
     },
     "tipoPublicacion": {
       "query": "select[name='tipoPublicacion']",
-      "value": "value"
+      "value": "value",
+      "single": true
     },
     "issnIsbn": {
       "query": "input[name='issnIsbn']",
-      "value": "value"
+      "value": "value",
+      "single": true
     },
     "paisEdicion": {
       "query": "select[name='paisEdicion']",
-      "value": "value"
+      "value": "value",
+      "single": true
     },
     "lugarPublicacion": {
       "query": "input[name='lugarPublicacion']",
-      "value": "value"
+      "value": "value",
+      "single": true
     },
     "editorial": {
       "query": "input[name='editorial']",
-      "value": "value"
+      "value": "value",
+      "single": true
     },
     "anioPublica": {
       "query": "input[name='anioPublica']",
-      "value": "value"
+      "value": "value",
+      "single": true
     },
     "tipoSoporteChecked1": {
       "query": "input[name='tipoSoporteChecked'][value='1']",
-      "value": "checked"
+      "value": "checked",
+      "single": true
     },
     "tipoSoporteChecked2": {
       "query": "input[name='tipoSoporteChecked'][value='2']",
-      "value": "checked"
+      "value": "checked",
+      "single": true
     },
     "web": {
       "query": "input[name='web']",
-      "value": "value"
+      "value": "value",
+      "single": true
     },
     "reunionCientifica": {
       "query": "input[name='reunionCientifica']",
-      "value": "value"
+      "value": "value",
+      "single": true
     },
     "tipoReunion": {
       "query": "select[name='tipoReunion']",
-      "value": "value"
+      "value": "value",
+      "single": true
     },
     "alcanceNacional": {
       "query": "input[name='alcanceNacional']",
-      "value": "value"
+      "value": "value",
+      "single": true
     },
     "alcanceInternacional": {
       "query": "input[name='alcanceInternacional']",
-      "value": "value"
+      "value": "value",
+      "single": true
     },
     "paisEvento": {
       "query": "select[name='paisEvento']",
-      "value": "value"
+      "value": "value",
+      "single": true
     },
     "lugarReunion": {
       "query": "input[name='lugarReunion']",
-      "value": "value"
+      "value": "value",
+      "single": true
     },
     "fechaReunion": {
       "query": "input[name='fechaReunion']",
-      "value": "value"
+      "value": "value",
+      "single": true
     },
     "institucionOrganizadora": {
       "query": "input[name='institucionOrganizadora']",
-      "value": "value"
+      "value": "value",
+      "single": true
+    },
+    "autorTable": {
+        "query": "#autorTable tr",
+        "callback": "getAffiliations",
+        "params": ["autor"],
+        "single": false
+    },
+    "palabraTable": {
+        "query": "#palabraTable input[name='palabraLabel']",
+        "callback": "getKeywords",
+        "params": [],
+        "single": false
     },
     "hdnresumen": {
       "query": "textarea[name='hdnresumen']",
-      "value": "value"
-    }
+      "value": "value",
+      "single": true
+    },
+    "disciplinarTable": {
+      "query": ":not(*)",
+      "callback": "getDisciplinar",
+      "params": [
+        "select[name='campo_0']",
+        "select[name='campo_0_0']"
+      ],
+      "single": false
+  }
 }

@@ -7,10 +7,10 @@ function createExportButton(pubType) {
     exportButton.style.backgroundColor = "#ffd000";
     switch (pubType) {
         case "bcoProduccionListaPublicacionCongreso":
-            exportButton.onclick = () => exportConicetCongress();
+            exportButton.onclick = () => exportConicet('congress');
             break;
         case "bcoProduccionListaPublicacionCapituloLibro":
-            exportButton.onclick = () => exportConicetChapter();
+            exportButton.onclick = () => exportConicet('chapters');
             break;
         case "bcoProduccionArticuloPublicacion":
             exportButton.onclick = () => exportConicetJournal();
@@ -21,9 +21,9 @@ function createExportButton(pubType) {
     return exportButton;
 }
 
-async function exportConicetCongress() {
+async function exportConicet(formatType) {
     try {
-        const url = chrome.runtime.getURL('format/congress.json');
+        const url = chrome.runtime.getURL(`format/${formatType}.json`);
         const response = await fetch(url);
         const data = await response.json();
 
@@ -31,59 +31,10 @@ async function exportConicetCongress() {
 
         Object.entries(data).forEach(([k, v]) => {
             console.log(`${k}: ${v.query}`);
-            conicetDict[k] = document.querySelector(v.query)[v.value];
-            console.log(document.querySelector(v.query))
+            conicetDict[k] = v.single
+                ? document.querySelector(v.query)[v.value]
+                : window[v.callback](document.querySelectorAll(v.query), ...(v.params || []));
         });
-
-        const autorTable = document.querySelectorAll("#autorTable tr");
-        conicetDict.autorTable = getAffiliations(autorTable, "autor");
-
-        const campo_0 = document.getElementsByName("campo_0")[0];
-        const campo_0_0 = document.getElementsByName("campo_0_0")[0];
-        conicetDict.disciplinarTable = getFields(campo_0, campo_0_0);
-
-        const palabraTable = document.querySelectorAll('#palabraTable input[name="palabraLabel"]');
-        conicetDict.palabraTable = getKeywords(palabraTable);
-
-        const linkFullText = document.querySelector('a[href*="archivosAdjuntos.do"]');
-        const baseUrl = window.location.href.split('/').slice(0, 4).join('/');
-        const downloadUrl = `${baseUrl}/${linkFullText.getAttribute('href')}`;
-        conicetDict.fullTextBase64 = await encode(downloadUrl);
-
-        const json = JSON.stringify(conicetDict, null, 4);
-        download(json, `${conicetDict.produccion}.json`, "application/json");
-
-    } catch (error) {
-        console.error('Error al cargar el JSON:', error);
-    }
-}
-
-async function exportConicetChapter() {
-    try {
-        const url = chrome.runtime.getURL('format/chapters.json');
-        const response = await fetch(url);
-        const data = await response.json();
-
-        let conicetDict = {};
-
-        Object.entries(data).forEach(([k, v]) => {
-            console.log(`${k}: ${v.query}`);
-            conicetDict[k] = document.querySelector(v.query)[v.value];
-            console.log(document.querySelector(v.query))
-        });
-
-        const autorTable = document.querySelectorAll("#autorTable tr");
-        conicetDict.autorTable = getAffiliations(autorTable, "autor");
-
-        const compiladorTable = document.querySelectorAll("#compiladorTable tr.odd");
-        conicetDict.compiladorTable = getAffiliations(compiladorTable, "compilador");
-
-        const campo_0 = document.getElementsByName("campo_0")[0];
-        const campo_0_0 = document.getElementsByName("campo_0_0")[0];
-        conicetDict.disciplinarTable = getFields(campo_0, campo_0_0);
-
-        const palabraTable = document.querySelectorAll('#palabraTable input[name="palabraLabel"]');
-        conicetDict.palabraTable = getKeywords(palabraTable);
 
         const linkFullText = document.querySelector('a[href*="archivosAdjuntos.do"]');
         const baseUrl = window.location.href.split('/').slice(0, 4).join('/');
@@ -127,12 +78,14 @@ function getAffiliations(organizacionTable, entityType) {
     return authorAffiliations;
 }
 
-function getFields(campo_0, campo_0_0) {
-    let text_0 = campo_0.options[campo_0.selectedIndex].text;
-    let text_0_0 = campo_0_0.options[campo_0_0.selectedIndex].text;
+function getDisciplinar(dummy_query, query_1, query_2) {
+    let campo_1 = document.querySelector(query_1);
+    let campo_2 = document.querySelector(query_2);
+    let text_1 = campo_1.options[campo_1.selectedIndex].text;
+    let text_2 = campo_2.options[campo_2.selectedIndex].text;
     return [
-        `${text_0} {${campo_0.value}}`,
-        `${text_0_0} {${campo_0_0.value}}`
+        `${text_1} {${campo_1.value}}`,
+        `${text_2} {${campo_2.value}}`
     ];
 }
 

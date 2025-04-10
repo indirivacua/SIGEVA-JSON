@@ -65,13 +65,13 @@ function importConicetChatper(conicetDict) {
     document.getElementsByName("isEditor")[0].checked = conicetDict["isEditor"];
     document.getElementsByName("isRevisor")[0].checked = conicetDict["isRevisor"];
     let autorTable = conicetDict["autorTable"];
-    cargarAutoresAfilicaciones(autorTable, "autor");
+    setAffiliations(autorTable, "autor");
     let compiladorTable = conicetDict["compiladorTable"];
-    cargarAutoresAfilicaciones(compiladorTable, "compilador");
+    setAffiliations(compiladorTable, "compilador");
     let disciplinarTable = conicetDict["disciplinarTable"];
-    cargarDisciplinar(disciplinarTable);
+    setDisciplinar(disciplinarTable);
     let palabraTable = conicetDict["palabraTable"];
-    cargarPalabrasClave(palabraTable);
+    setKeywords(palabraTable);
     let hdnresumen = document.getElementsByName("hdnresumen")[0];
     hdnresumen.value = conicetDict["hdnresumen"];
     decode(conicetDict["fullTextBase64"], conicetDict["produccion"]);
@@ -125,11 +125,11 @@ function importConicetCongress(conicetDict) {
     let institucionOrganizadora = document.getElementsByName("institucionOrganizadora")[0];
     institucionOrganizadora.value = conicetDict["institucionOrganizadora"];
     let autorTable = conicetDict["autorTable"];
-    cargarAutoresAfilicaciones(autorTable, "autor");
+    setAffiliations(autorTable, "autor");
     let disciplinarTable = conicetDict["disciplinarTable"];
-    cargarDisciplinar(disciplinarTable);
+    setDisciplinar(disciplinarTable);
     let palabraTable = conicetDict["palabraTable"];
-    cargarPalabrasClave(palabraTable);
+    setKeywords(palabraTable);
     let hdnresumen = document.getElementsByName("hdnresumen")[0];
     hdnresumen.value = conicetDict["hdnresumen"];
     decode(conicetDict["fullTextBase64"], conicetDict["produccion"]);
@@ -162,18 +162,18 @@ function loadFile(callback) {
     fileInput.click();
 }
 
-function cargarAutoresAfilicaciones(autorTable, entityType) {
-    let autorParticipacionLabel = document.getElementsByName(`${entityType}ParticipacionLabel`);
-    let autorNuevo = document.getElementsByName(`${entityType}Nuevo`)[0];
-    Object.keys(autorTable).forEach((autor, i) => {
-        if (i >= autorParticipacionLabel.length) {
-            autorNuevo.click();
-            autorParticipacionLabel = document.getElementsByName(`${entityType}ParticipacionLabel`);
+function setAffiliations(entityTable, entityType) {
+    let entityParticipacionLabel = document.getElementsByName(`${entityType}ParticipacionLabel`);
+    let entityNuevo = document.getElementsByName(`${entityType}Nuevo`)[0];
+    Object.keys(entityTable).forEach((entity, i) => {
+        if (i >= entityParticipacionLabel.length) {
+            entityNuevo.click();
+            entityParticipacionLabel = document.getElementsByName(`${entityType}ParticipacionLabel`);
         }
-        autorParticipacionLabel[i].value = autor;
-        let afiliaciones = autorTable[autor];
+        entityParticipacionLabel[i].value = entity;
+        let afiliaciones = entityTable[entity];
         if (afiliaciones.length > 0) {
-            let autorTable = autorParticipacionLabel[i].closest("table").querySelector("tbody");
+            let entityTable = entityParticipacionLabel[i].closest("table").querySelector("tbody");
             afiliaciones.forEach((afiliacion) => {
                 let regex = /(.+?)\s\{(.+?)\}/;
                 let matches = afiliacion.match(regex);
@@ -201,14 +201,14 @@ function cargarAutoresAfilicaciones(autorTable, entityType) {
                             <input type="button" name="${entityType}OrganizacionBorrar" value="Borrar" class="borrar" align="right">
                         </td>
                     </tr>`;
-                    autorTable.insertAdjacentHTML("beforeend", nuevaFila);
+                    entityTable.insertAdjacentHTML("beforeend", nuevaFila);
                 }
             });
         }
     });
 }
 
-function cargarDisciplinar(disciplinarTable) {
+function setDisciplinar(disciplinarTable) {
     let [text_0, value_0] = disciplinarTable[0].match(/(.+) \{(\d+)\}/).slice(1);
     let [text_0_0, value_0_0] = disciplinarTable[1].match(/(.+) \{(\d+)\}/).slice(1);
     let campo_0 = document.getElementsByName("campo_0")[0];
@@ -221,7 +221,7 @@ function cargarDisciplinar(disciplinarTable) {
     }, 1000);
 }
 
-function cargarPalabrasClave(palabraTable) {
+function setKeywords(palabraTable) {
     let palabraLabel = document.getElementsByName("palabraLabel");
     let palabraNuevo = document.getElementsByName("palabraNuevo")[0];
     for (let i = 0; i < palabraTable.length; i++) {
