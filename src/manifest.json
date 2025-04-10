@@ -37,5 +37,19 @@
       "https://sigeva.unlp.edu.ar/*",
       "https://si.conicet.gov.ar/*",
       "https://cvar.sicytar.mincyt.gob.ar/*"
+   ],
+   "web_accessible_resources": [
+      {
+         "matches":[
+            "https://sigeva.unlp.edu.ar/*",
+            "https://si.conicet.gov.ar/*",
+            "https://cvar.sicytar.mincyt.gob.ar/*"
+         ],
+         "resources":[
+            "format/congress.json",
+            "format/chapters.json",
+            "format/articles.json"
+         ]
+      }
    ]
 }

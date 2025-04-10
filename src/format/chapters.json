@@ -1,0 +1,98 @@
+{
+    "tipoParteLibro": {
+        "query": "select[name='tipoParteLibro']",
+        "value": "value"
+    },
+    "tituloLibro": {
+        "query": "input[name='tituloLibro']",
+        "value": "value"
+    },
+    "produccion": {
+        "query": "input[name='produccion']",
+        "value": "value"
+    },
+    "isbn": {
+        "query": "input[name='isbn']",
+        "value": "value"
+    },
+    "idioma": {
+        "query": "select[name='idioma']",
+        "value": "value"
+    },
+    "volumen": {
+        "query": "input[name='volumen']",
+        "value": "value"
+    },
+    "tomo": {
+        "query": "input[name='tomo']",
+        "value": "value"
+    },
+    "numero": {
+        "query": "input[name='numero']",
+        "value": "value"
+    },
+    "totalPaginasLibro": {
+        "query": "input[name='totalPaginasLibro']",
+        "value": "value"
+    },
+    "paginaInicial": {
+        "query": "input[name='paginaInicial']",
+        "value": "value"
+    },
+    "paginaFinal": {
+        "query": "input[name='paginaFinal']",
+        "value": "value"
+    },
+    "publicado": {
+        "query": "input[name='publicado']:checked",
+        "value": "value"
+    },
+    "referato": {
+        "query": "input[name='referato']:checked",
+        "value": "value"
+    },
+    "pais": {
+        "query": "select[name='pais']",
+        "value": "value"
+    },
+    "lugarEdicion": {
+        "query": "input[name='lugarEdicion']",
+        "value": "value"
+    },
+    "editorial": {
+        "query": "input[name='editorial']",
+        "value": "value"
+    },
+    "anioPublica": {
+        "query": "input[name='anioPublica']",
+        "value": "value"
+    },
+    "tipoSoporteChecked1": {
+        "query": "input[name='tipoSoporteChecked'][value='1']",
+        "value": "checked"
+    },
+    "tipoSoporteChecked2": {
+        "query": "input[name='tipoSoporteChecked'][value='2']",
+        "value": "checked"
+    },
+    "web": {
+        "query": "input[name='web']",
+        "value": "value"
+    },
+    "isAutor": {
+        "query": "input[name='isAutor']",
+        "value": "checked"
+    },
+    "isEditor": {
+        "query": "input[name='isEditor']",
+        "value": "checked"
+    },
+    "isRevisor": {
+        "query": "input[name='isRevisor']",
+        "value": "checked"
+    },
+    "hdnresumen": {
+        "query": "textarea[name='hdnresumen']",
+        "value": "value"
+    }
+}

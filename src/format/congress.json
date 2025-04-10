@@ -1,0 +1,90 @@
+{
+    "tipoTrabajo": {
+      "query": "select[name='tipoTrabajo']",
+      "value": "value"
+    },
+    "produccion": {
+      "query": "input[name='produccion']",
+      "value": "value"
+    },
+    "idioma": {
+      "query": "select[name='idioma']",
+      "value": "value"
+    },
+    "tituloPublicacion": {
+      "query": "input[name='tituloPublicacion']",
+      "value": "value"
+    },
+    "tipoPublicacion": {
+      "query": "select[name='tipoPublicacion']",
+      "value": "value"
+    },
+    "issnIsbn": {
+      "query": "input[name='issnIsbn']",
+      "value": "value"
+    },
+    "paisEdicion": {
+      "query": "select[name='paisEdicion']",
+      "value": "value"
+    },
+    "lugarPublicacion": {
+      "query": "input[name='lugarPublicacion']",
+      "value": "value"
+    },
+    "editorial": {
+      "query": "input[name='editorial']",
+      "value": "value"
+    },
+    "anioPublica": {
+      "query": "input[name='anioPublica']",
+      "value": "value"
+    },
+    "tipoSoporteChecked1": {
+      "query": "input[name='tipoSoporteChecked'][value='1']",
+      "value": "checked"
+    },
+    "tipoSoporteChecked2": {
+      "query": "input[name='tipoSoporteChecked'][value='2']",
+      "value": "checked"
+    },
+    "web": {
+      "query": "input[name='web']",
+      "value": "value"
+    },
+    "reunionCientifica": {
+      "query": "input[name='reunionCientifica']",
+      "value": "value"
+    },
+    "tipoReunion": {
+      "query": "select[name='tipoReunion']",
+      "value": "value"
+    },
+    "alcanceNacional": {
+      "query": "input[name='alcanceNacional']",
+      "value": "value"
+    },
+    "alcanceInternacional": {
+      "query": "input[name='alcanceInternacional']",
+      "value": "value"
+    },
+    "paisEvento": {
+      "query": "select[name='paisEvento']",
+      "value": "value"
+    },
+    "lugarReunion": {
+      "query": "input[name='lugarReunion']",
+      "value": "value"
+    },
+    "fechaReunion": {
+      "query": "input[name='fechaReunion']",
+      "value": "value"
+    },
+    "institucionOrganizadora": {
+      "query": "input[name='institucionOrganizadora']",
+      "value": "value"
+    },
+    "hdnresumen": {
+      "query": "textarea[name='hdnresumen']",
+      "value": "value"
+    }
+}

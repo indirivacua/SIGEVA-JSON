@@ -57,8 +57,8 @@ function importConicetChatper(conicetDict) {
     editorial.value = conicetDict["editorial"];
     let anioPublica = document.getElementsByName("anioPublica")[0];
     anioPublica.value = conicetDict["anioPublica"];
-    document.getElementsByName("tipoSoporteChecked")[0].checked = conicetDict["tipoSoporteChecked0"];
-    document.getElementsByName("tipoSoporteChecked")[1].checked = conicetDict["tipoSoporteChecked1"];
+    document.getElementsByName("tipoSoporteChecked")[0].checked = conicetDict["tipoSoporteChecked1"];
+    document.getElementsByName("tipoSoporteChecked")[1].checked = conicetDict["tipoSoporteChecked2"];
     let web = document.getElementsByName("web")[0];
     web.value = conicetDict["web"];
     document.getElementsByName("isAutor")[0].checked = conicetDict["isAutor"];
@@ -67,7 +67,7 @@ function importConicetChatper(conicetDict) {
     let autorTable = conicetDict["autorTable"];
     cargarAutoresAfilicaciones(autorTable, "autor");
     let compiladorTable = conicetDict["compiladorTable"];
-    cargarCompiladoresAfilicaciones(compiladorTable, "compilador");
+    cargarAutoresAfilicaciones(compiladorTable, "compilador");
     let disciplinarTable = conicetDict["disciplinarTable"];
     cargarDisciplinar(disciplinarTable);
     let palabraTable = conicetDict["palabraTable"];
@@ -102,10 +102,10 @@ function importConicetCongress(conicetDict) {
     editorial.value = conicetDict["editorial"];
     let anioPublica = document.getElementsByName("anioPublica")[0];
     anioPublica.value = conicetDict["anioPublica"];
-    let tipoSoporteChecked0 = document.getElementsByName("tipoSoporteChecked")[0];
-    tipoSoporteChecked0.checked = conicetDict["tipoSoporteChecked0"];
-    let tipoSoporteChecked1 = document.getElementsByName("tipoSoporteChecked")[1];
+    let tipoSoporteChecked1 = document.getElementsByName("tipoSoporteChecked")[0];
     tipoSoporteChecked1.checked = conicetDict["tipoSoporteChecked1"];
+    let tipoSoporteChecked2 = document.getElementsByName("tipoSoporteChecked")[1];
+    tipoSoporteChecked2.checked = conicetDict["tipoSoporteChecked2"];
     let web = document.getElementsByName("web")[0];
     web.value = conicetDict["web"];
     let reunionCientifica = document.getElementsByName("reunionCientifica")[0];
@@ -125,7 +125,7 @@ function importConicetCongress(conicetDict) {
     let institucionOrganizadora = document.getElementsByName("institucionOrganizadora")[0];
     institucionOrganizadora.value = conicetDict["institucionOrganizadora"];
     let autorTable = conicetDict["autorTable"];
-    cargarAutoresAfilicaciones(autorTable);
+    cargarAutoresAfilicaciones(autorTable, "autor");
     let disciplinarTable = conicetDict["disciplinarTable"];
     cargarDisciplinar(disciplinarTable);
     let palabraTable = conicetDict["palabraTable"];
@@ -139,17 +139,15 @@ function loadFile(callback) {
     let fileInput = document.createElement("input");
     fileInput.type = "file";
     fileInput.id = "file_input";
-    fileInput.accept = ".json"; // Aceptar solo archivos JSON
-    fileInput.style.display = "none"; // Hacerlo invisible
+    fileInput.accept = ".json";
+    fileInput.style.display = "none";
 
-    // Agregar el evento para manejar el archivo cargado
     fileInput.addEventListener("change", function (e) {
         const file = e.target.files[0];
         if (file) {
             const reader = new FileReader();
             reader.onload = function (event) {
                 try {
-                    // Parsear el contenido del archivo como JSON
                     conicetDict = JSON.parse(event.target.result);
                     callback(conicetDict);
                 } catch (error) {
@@ -157,11 +155,10 @@ function loadFile(callback) {
                 }
             };
 
-            reader.readAsText(file); // Leer el archivo como texto
+            reader.readAsText(file);
         }
     });
 
-    // Simular clic en el input de tipo file
     fileInput.click();
 }
 
@@ -206,40 +203,6 @@ function cargarAutoresAfilicaciones(autorTable, entityType) {
                     </tr>`;
                     autorTable.insertAdjacentHTML("beforeend", nuevaFila);
                 }
-            });
-        }
-    });
-}
-
-function cargarCompiladoresAfilicaciones(compiladorTable) {
-    let compiladorParticipacionLabel = document.getElementsByName("compiladorParticipacionLabel");
-    let compiladorNuevo = document.getElementsByName("compiladorNuevo")[0];
-
-    Object.keys(compiladorTable).forEach((compilador, i) => {
-        if (i >= compiladorParticipacionLabel.length) {
-            compiladorNuevo.click();
-            compiladorParticipacionLabel = document.getElementsByName("compiladorParticipacionLabel");
-        }
-        compiladorParticipacionLabel[i].value = compilador;
-
-        let afiliaciones = compiladorTable[compilador];
-        if (afiliaciones.length > 0) {
-            let tabla = compiladorParticipacionLabel[i].closest("table").querySelector("tbody");
-            afiliaciones.forEach(afiliacion => {
-                let [organizacion, organizacionId] = afiliacion.split(" {").map(s => s.replace("}", ""));
-                let filaHTML = `
-                <tr class="odd">
-                    <td colspan="2" style="width:500;border-top: 1px solid #888;">
-                        <div>${organizacion}</div>
-                        <input type="hidden" name="compiladorOrganizacionLabel" value="${organizacion}">
-                        <input type="hidden" name="compiladorOrganizacionId" value="${organizacionId}">
-                        <!-- Resto de campos ocultos -->
-                    </td>
-                    <td style="width:30;border-top: 1px solid #888;">
-                        <input type="button" value="Borrar" class="borrar">
-                    </td>
-                </tr>`;
-                tabla.insertAdjacentHTML("beforeend", filaHTML);
             });
         }
     });

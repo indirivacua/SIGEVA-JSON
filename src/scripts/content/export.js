@@ -22,150 +22,84 @@ function createExportButton(pubType) {
 }
 
 async function exportConicetCongress() {
-    let conicetDict = {};
+    try {
+        const url = chrome.runtime.getURL('format/congress.json');
+        const response = await fetch(url);
+        const data = await response.json();
 
-    let tipoTrabajo = document.getElementsByName("tipoTrabajo")[0];
-    conicetDict.tipoTrabajo = tipoTrabajo.value;
-    let produccion = document.getElementsByName("produccion")[0];
-    conicetDict.produccion = produccion.value;
-    let idioma = document.getElementsByName("idioma")[0];
-    conicetDict.idioma = idioma.value;
-    let tituloPublicacion = document.getElementsByName("tituloPublicacion")[0];
-    conicetDict.tituloPublicacion = tituloPublicacion.value;
-    let tipoPublicacion = document.getElementsByName("tipoPublicacion")[0];
-    conicetDict.tipoPublicacion = tipoPublicacion.value;
-    let issnIsbn = document.getElementsByName("issnIsbn")[0];
-    conicetDict.issnIsbn = issnIsbn.value;
-    let paisEdicion = document.getElementsByName("paisEdicion")[0];
-    conicetDict.paisEdicion = paisEdicion.value;
-    let lugarPublicacion = document.getElementsByName("lugarPublicacion")[0];
-    conicetDict.lugarPublicacion = lugarPublicacion.value;
-    let editorial = document.getElementsByName("editorial")[0];
-    conicetDict.editorial = editorial.value;
-    let anioPublica = document.getElementsByName("anioPublica")[0];
-    conicetDict.anioPublica = anioPublica.value;
-    let tipoSoporteChecked0 = document.getElementsByName("tipoSoporteChecked")[0];
-    conicetDict.tipoSoporteChecked0 = tipoSoporteChecked0.checked;
-    let tipoSoporteChecked1 = document.getElementsByName("tipoSoporteChecked")[1];
-    conicetDict.tipoSoporteChecked1 = tipoSoporteChecked1.checked;
-    let web = document.getElementsByName("web")[0];
-    conicetDict.web = web.value;
-    let reunionCientifica = document.getElementsByName("reunionCientifica")[0];
-    conicetDict.reunionCientifica = reunionCientifica.value;
-    let tipoReunion = document.getElementsByName("tipoReunion")[0];
-    conicetDict.tipoReunion = tipoReunion.value;
-    let alcanceNacional = document.getElementsByName("alcanceNacional")[0];
-    conicetDict.alcanceNacional = alcanceNacional.checked;
-    let alcanceInternacional = document.getElementsByName("alcanceInternacional")[0];
-    conicetDict.alcanceInternacional = alcanceInternacional.checked;
-    let paisEvento = document.getElementsByName("paisEvento")[0];
-    conicetDict.paisEvento = paisEvento.value;
-    let lugarReunion = document.getElementsByName("lugarReunion")[0];
-    conicetDict.lugarReunion = lugarReunion.value;
-    let fechaReunion = document.getElementsByName("fechaReunion")[0];
-    conicetDict.fechaReunion = fechaReunion.value;
-    let institucionOrganizadora = document.getElementsByName("institucionOrganizadora")[0];
-    conicetDict.institucionOrganizadora = institucionOrganizadora.value;
-    let autorTable = document.querySelectorAll("#autorTable tr");
-    conicetDict.autorTable = getAffiliations(autorTable, "autor");
-    let campo_0 = document.getElementsByName("campo_0")[0];
-    let campo_0_0 = document.getElementsByName("campo_0_0")[0];
-    conicetDict.disciplinarTable = getFields(campo_0, campo_0_0);
-    let palabraTable = document.querySelectorAll('#palabraTable input[type="text"][name="palabraLabel"]');
-    conicetDict.palabraTable = getKeywords(palabraTable);
-    let hdnresumen = document.getElementsByName("hdnresumen")[0];
-    conicetDict.hdnresumen = hdnresumen.value;
-    let linkFullText = document.querySelector('a[href*="archivosAdjuntos.do"]');
-    let baseUrl = window.location.href.split('/').slice(0, 4).join('/');
-    let downloadUrl = `${baseUrl}/${linkFullText.getAttribute('href')}`;
-    conicetDict.fullTextBase64 = await encode(downloadUrl);
+        let conicetDict = {};
 
-    let json = JSON.stringify(conicetDict, null, 4);
-    download(json, `${conicetDict.produccion}.json`, "application/json");
+        Object.entries(data).forEach(([k, v]) => {
+            console.log(`${k}: ${v.query}`);
+            conicetDict[k] = document.querySelector(v.query)[v.value];
+            console.log(document.querySelector(v.query))
+        });
+
+        const autorTable = document.querySelectorAll("#autorTable tr");
+        conicetDict.autorTable = getAffiliations(autorTable, "autor");
+
+        const campo_0 = document.getElementsByName("campo_0")[0];
+        const campo_0_0 = document.getElementsByName("campo_0_0")[0];
+        conicetDict.disciplinarTable = getFields(campo_0, campo_0_0);
+
+        const palabraTable = document.querySelectorAll('#palabraTable input[name="palabraLabel"]');
+        conicetDict.palabraTable = getKeywords(palabraTable);
+
+        const linkFullText = document.querySelector('a[href*="archivosAdjuntos.do"]');
+        const baseUrl = window.location.href.split('/').slice(0, 4).join('/');
+        const downloadUrl = `${baseUrl}/${linkFullText.getAttribute('href')}`;
+        conicetDict.fullTextBase64 = await encode(downloadUrl);
+
+        const json = JSON.stringify(conicetDict, null, 4);
+        download(json, `${conicetDict.produccion}.json`, "application/json");
+
+    } catch (error) {
+        console.error('Error al cargar el JSON:', error);
+    }
 }
 
 async function exportConicetChapter() {
-    let conicetDict = {};
+    try {
+        const url = chrome.runtime.getURL('format/chapters.json');
+        const response = await fetch(url);
+        const data = await response.json();
 
-    let tipoParteLibro = document.getElementsByName("tipoParteLibro")[0];
-    conicetDict.tipoParteLibro = tipoParteLibro.value;
-    let tituloLibro = document.getElementsByName("tituloLibro")[0];
-    conicetDict.tituloLibro = tituloLibro.value;
-    let produccion = document.getElementsByName("produccion")[0];
-    conicetDict.produccion = produccion.value;
-    let isbn = document.getElementsByName("isbn")[0];
-    conicetDict.isbn = isbn.value;
-    let idioma = document.getElementsByName("idioma")[0];
-    conicetDict.idioma = idioma.value;
-    let volumen = document.getElementsByName("volumen")[0];
-    conicetDict.volumen = volumen.value;
-    let tomo = document.getElementsByName("tomo")[0];
-    conicetDict.tomo = tomo.value;
-    let numero = document.getElementsByName("numero")[0];
-    conicetDict.numero = numero.value;
-    let totalPaginasLibro = document.getElementsByName("totalPaginasLibro")[0];
-    conicetDict.totalPaginasLibro = totalPaginasLibro.value;
-    let paginaInicial = document.getElementsByName("paginaInicial")[0];
-    conicetDict.paginaInicial = paginaInicial.value;
-    let paginaFinal = document.getElementsByName("paginaFinal")[0];
-    conicetDict.paginaFinal = paginaFinal.value;
-    let publicado = document.querySelector('input[name="publicado"]:checked');
-    conicetDict.publicado = publicado ? publicado.value : "";
-    let referato = document.querySelector('input[name="referato"]:checked');
-    conicetDict.referato = referato ? referato.value : "";
-    let pais = document.getElementsByName("pais")[0];
-    conicetDict.pais = pais.value;
-    let lugarEdicion = document.getElementsByName("lugarEdicion")[0];
-    conicetDict.lugarEdicion = lugarEdicion.value;
-    let editorial = document.getElementsByName("editorial")[0];
-    conicetDict.editorial = editorial.value;
-    let anioPublica = document.getElementsByName("anioPublica")[0];
-    conicetDict.anioPublica = anioPublica.value;
-    let tipoSoporteChecked0 = document.getElementsByName("tipoSoporteChecked")[0];
-    conicetDict.tipoSoporteChecked0 = tipoSoporteChecked0.checked;
-    let tipoSoporteChecked1 = document.getElementsByName("tipoSoporteChecked")[1];
-    conicetDict.tipoSoporteChecked1 = tipoSoporteChecked1.checked;
-    let web = document.getElementsByName("web")[0];
-    conicetDict.web = web.value;
-    conicetDict.isAutor = document.getElementsByName("isAutor")[0].checked;
-    conicetDict.isEditor = document.getElementsByName("isEditor")[0].checked;
-    conicetDict.isRevisor = document.getElementsByName("isRevisor")[0].checked;
-    let autorTable = document.querySelectorAll("#autorTable tr");
-    conicetDict.autorTable = getAffiliations(autorTable, "autor");
-    let compiladorTable = document.querySelectorAll("#compiladorTable tr.odd");
-    conicetDict.compiladorTable = getAffiliations(compiladorTable, "compilador");
-    let campo_0 = document.getElementsByName("campo_0")[0];
-    let campo_0_0 = document.getElementsByName("campo_0_0")[0];
-    conicetDict.disciplinarTable = getFields(campo_0, campo_0_0);
-    let palabraTable = document.querySelectorAll('#palabraTable input[name="palabraLabel"]');
-    conicetDict.palabraTable = getKeywords(palabraTable);
-    let hdnresumen = document.getElementsByName("hdnresumen")[0];
-    conicetDict.hdnresumen = hdnresumen.value;
-    let linkFullText = document.querySelector('a[href*="archivosAdjuntos.do"]');
-    let baseUrl = window.location.href.split('/').slice(0, 4).join('/');
-    let downloadUrl = `${baseUrl}/${linkFullText.getAttribute('href')}`;
-    conicetDict.fullTextBase64 = await encode(downloadUrl);
+        let conicetDict = {};
 
-    let json = JSON.stringify(conicetDict, null, 4);
-    download(json, `${conicetDict.produccion}.json`, "application/json");
+        Object.entries(data).forEach(([k, v]) => {
+            console.log(`${k}: ${v.query}`);
+            conicetDict[k] = document.querySelector(v.query)[v.value];
+            console.log(document.querySelector(v.query))
+        });
+
+        const autorTable = document.querySelectorAll("#autorTable tr");
+        conicetDict.autorTable = getAffiliations(autorTable, "autor");
+
+        const compiladorTable = document.querySelectorAll("#compiladorTable tr.odd");
+        conicetDict.compiladorTable = getAffiliations(compiladorTable, "compilador");
+
+        const campo_0 = document.getElementsByName("campo_0")[0];
+        const campo_0_0 = document.getElementsByName("campo_0_0")[0];
+        conicetDict.disciplinarTable = getFields(campo_0, campo_0_0);
+
+        const palabraTable = document.querySelectorAll('#palabraTable input[name="palabraLabel"]');
+        conicetDict.palabraTable = getKeywords(palabraTable);
+
+        const linkFullText = document.querySelector('a[href*="archivosAdjuntos.do"]');
+        const baseUrl = window.location.href.split('/').slice(0, 4).join('/');
+        const downloadUrl = `${baseUrl}/${linkFullText.getAttribute('href')}`;
+        conicetDict.fullTextBase64 = await encode(downloadUrl);
+
+        const json = JSON.stringify(conicetDict, null, 4);
+        download(json, `${conicetDict.produccion}.json`, "application/json");
+
+    } catch (error) {
+        console.error('Error al cargar el JSON:', error);
+    }
 }
 
 async function exportConicetJournal() {
     alert("Esta función aún no está implementada. Próximamente disponible.");
-}
-
-function download(data, filename, type) {
-    let file = new Blob([data], { type: type });
-    let a = document.createElement("a");
-    let url = URL.createObjectURL(file);
-    a.href = url;
-    a.download = filename;
-    document.body.appendChild(a);
-    a.click();
-    setTimeout(function () {
-        document.body.removeChild(a);
-        window.URL.revokeObjectURL(url);
-    }, 0);
 }
 
 function getAffiliations(organizacionTable, entityType) {
@@ -227,6 +161,20 @@ async function encode(downloadUrl) {
         console.error("Error retrieving or encoding the file:", error);
         throw error;
     }
+}
+
+function download(data, filename, type) {
+    let file = new Blob([data], { type: type });
+    let a = document.createElement("a");
+    let url = URL.createObjectURL(file);
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function () {
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+    }, 0);
 }
 
 globalThis.createExportButton = createExportButton;
