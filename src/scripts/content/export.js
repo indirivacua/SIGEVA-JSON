@@ -13,7 +13,7 @@ function createExportButton(pubType) {
             exportButton.onclick = () => exportConicet("chapters");
             break;
         case "bcoProduccionArticuloPublicacion":
-            exportButton.onclick = () => exportConicetJournal();
+            exportButton.onclick = () => exportConicet("articles");
             break;
         default:
             break;
@@ -47,10 +47,6 @@ async function exportConicet(formatType) {
     } catch (error) {
         console.error("Error loading or parsing JSON:", error);
     }
-}
-
-async function exportConicetJournal() {
-    alert("Esta función aún no está implementada. Próximamente disponible.");
 }
 
 function getAffiliations(organizacionTable, entityType) {

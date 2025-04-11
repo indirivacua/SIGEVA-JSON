@@ -16,7 +16,7 @@ function createImportButton(pubType) {
             importButton.onclick = () => loadFile(importConicet, "chapters");
             break;
         case "bcoPrecargarArticulo":
-            importButton.onclick = () => loadFile(importConicetJournal);
+            importButton.onclick = () => loadFile(importConicet, "articles");
             break;
         default:
             break;
@@ -43,10 +43,6 @@ async function importConicet(conicetDict, formatType) {
     } catch (error) {
         console.error("Error loading or parsing JSON:", error);
     }
-}
-
-function importConicetJournal(conicetDict) {
-    alert("Esta función aún no está implementada. Próximamente disponible.");
 }
 
 function setAffiliations(entityTable, entityType) {
@@ -97,7 +93,10 @@ function setAffiliations(entityTable, entityType) {
 
 function setRadioValue(value, query) {
     document.querySelectorAll(query).forEach((el) => {
-        el.checked = el.value === value;
+        if (el.value === value) {
+            el.checked = true;
+            el.dispatchEvent(new Event("change")); // Needed to dispatch 'seleccionarAutor(this);' in Journal Article
+        }
     });
 }
 

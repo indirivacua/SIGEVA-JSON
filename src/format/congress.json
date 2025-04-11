@@ -76,12 +76,12 @@
     },
     "alcanceNacional": {
       "query": "input[name='alcanceNacional']",
-      "field": "value",
+      "field": "checked",
       "single": true
     },
     "alcanceInternacional": {
       "query": "input[name='alcanceInternacional']",
-      "field": "value",
+      "field": "checked",
       "single": true
     },
     "paisEvento": {

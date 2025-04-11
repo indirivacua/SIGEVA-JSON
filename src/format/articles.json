@@ -1,3 +1,178 @@
 {
-
+    "publicacionId": {
+        "query": "input[name='publicacionId']",
+        "field": "value",
+        "single": true
+    },
+    "srevista": {
+        "query": "textarea[name='srevista']",
+        "field": "value",
+        "single": true
+    },
+    "editorial": {
+        "query": "input[name='editorial']",
+        "field": "value",
+        "single": true
+    },
+    "pais": {
+        "query": "select[name='pais']",
+        "field": "value",
+        "single": true
+    },
+    "lugarEdicion": {
+        "query": "input[name='lugarEdicion']",
+        "field": "value",
+        "single": true
+    },
+    "produccion": {
+        "query": "input[name='produccion']",
+        "field": "value",
+        "single": true
+    },
+    "idioma": {
+        "query": "select[name='idioma']",
+        "field": "value",
+        "single": true
+    },
+    "volumen": {
+        "query": "input[name='volumen']",
+        "field": "value",
+        "single": true
+    },
+    "tomo": {
+        "query": "input[name='tomo']",
+        "field": "value",
+        "single": true
+    },
+    "numero": {
+        "query": "input[name='numero']",
+        "field": "value",
+        "single": true
+    },
+    "paginaInicial": {
+        "query": "input[name='paginaInicial']",
+        "field": "value",
+        "single": true
+    },
+    "paginaFinal": {
+        "query": "input[name='paginaFinal']",
+        "field": "value",
+        "single": true
+    },
+    "fechaPublica": {
+        "query": "input[name='fechaPublica']",
+        "field": "value",
+        "single": true
+    },
+    "web": {
+        "query": "input[name='web']",
+        "field": "value",
+        "single": true
+    },
+    "doi": {
+        "query": "input[name='doi']",
+        "field": "value",
+        "single": true
+    },
+    "tipoReferato": {
+        "query": ":not(*)",
+        "field": "value",
+        "callback": {
+            "export": "getRadioValue",
+            "import": "setRadioValue"
+        },
+        "params": {
+            "export": ["input[name='tipoReferato']"],
+            "import": ["input[name='tipoReferato']"]
+        },
+        "single": false
+    },
+    "publicado": {
+        "query": ":not(*)",
+        "field": "value",
+        "callback": {
+            "export": "getRadioValue",
+            "import": "setRadioValue"
+        },
+        "params": {
+            "export": ["input[name='publicado']"],
+            "import": ["input[name='publicado']"]
+        },
+        "single": false
+    },
+    "tipoSoporteChecked1": {
+        "query": "input[name='tipoSoporteChecked'][value='1']",
+        "field": "checked",
+        "single": true
+    },
+    "tipoSoporteChecked2": {
+        "query": "input[name='tipoSoporteChecked'][value='2']",
+        "field": "checked",
+        "single": true
+    },
+    "autorTable": {
+        "query": "#autorTable tr",
+        "callback": {
+            "export": "getAffiliations",
+            "import": "setAffiliations"
+        },
+        "params": {
+            "export": ["autor"],
+            "import": ["autor"]
+        },
+        "single": false
+    },
+    "autorSel": {
+        "query": ":not(*)",
+        "field": "value",
+        "callback": {
+            "export": "getRadioValue",
+            "import": "setRadioValue"
+        },
+        "params": {
+            "export": ["input[name='autorSel']"],
+            "import": ["input[name='autorSel']"]
+        },
+        "single": false
+    },
+    "palabraTable": {
+        "query": "#palabraTable input[name='palabraLabel']",
+        "callback": {
+            "export": "getKeywords",
+            "import": "setKeywords"
+        },
+        "params": {
+            "export": [],
+            "import": []
+        },
+        "single": false
+    },
+    "hdnresumen": {
+        "query": "textarea[name='hdnresumen']",
+        "field": "value",
+        "single": true
+    },
+    "disciplinarTable": {
+        "query": ":not(*)",
+        "callback": {
+            "export": "getDisciplinar",
+            "import": "setDisciplinar"
+        },
+        "params": {
+            "export": [
+                "select[name='campo_0']",
+                "select[name='campo_0_0']"
+            ],
+            "import": [
+                "select[name='campo_0']",
+                "select[name='campo_0_0']"
+            ]
+        },
+        "single": false
+    },
+    "tipoAdjunto": {
+        "query": "select[name='tipoAdjunto']",
+        "field": "value",
+        "single": true
+    }
 }
