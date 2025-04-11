@@ -25,15 +25,16 @@ async function exportConicet(formatType) {
     try {
         const url = chrome.runtime.getURL(`format/${formatType}.json`);
         const response = await fetch(url);
-        const data = await response.json();
+        const fieldMapping = await response.json();
 
         let conicetDict = {};
 
-        Object.entries(data).forEach(([k, v]) => {
-            console.log(`${k}: ${v.query}`);
+        Object.entries(fieldMapping).forEach(([k, v]) => {
+            // console.log(`${k}: ${v.query}`);
             conicetDict[k] = v.single
-                ? document.querySelector(v.query)[v.value]
-                : window[v.callback](document.querySelectorAll(v.query), ...(v.params || []));
+                ? document.querySelector(v.query)[v.field]
+                : window[v.callback.export](
+                    document.querySelectorAll(v.query), ...(v.params.export || []));
         });
 
         const linkFullText = document.querySelector('a[href*="archivosAdjuntos.do"]');
@@ -42,10 +43,9 @@ async function exportConicet(formatType) {
         conicetDict.fullTextBase64 = await encode(downloadUrl);
 
         const json = JSON.stringify(conicetDict, null, 4);
-        download(json, `${conicetDict.produccion}.json`, "application/json");
-
+        downloadFile(json, `${conicetDict.produccion}.json`, "application/json");
     } catch (error) {
-        console.error('Error al cargar el JSON:', error);
+        console.error("Error loading or parsing JSON:", error);
     }
 }
 
@@ -78,7 +78,13 @@ function getAffiliations(organizacionTable, entityType) {
     return authorAffiliations;
 }
 
-function getDisciplinar(dummy_query, query_1, query_2) {
+
+function getRadioValue(dummy_arg, query) {
+    const selected = document.querySelector(`${query}:checked`);
+    return selected ? selected.value : "";
+}
+
+function getDisciplinar(dummy_arg, query_1, query_2) {
     let campo_1 = document.querySelector(query_1);
     let campo_2 = document.querySelector(query_2);
     let text_1 = campo_1.options[campo_1.selectedIndex].text;
@@ -116,7 +122,7 @@ async function encode(downloadUrl) {
     }
 }
 
-function download(data, filename, type) {
+function downloadFile(data, filename, type) {
     let file = new Blob([data], { type: type });
     let a = document.createElement("a");
     let url = URL.createObjectURL(file);

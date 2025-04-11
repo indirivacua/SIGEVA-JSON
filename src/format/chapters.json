@@ -1,149 +1,192 @@
 {
     "tipoParteLibro": {
         "query": "select[name='tipoParteLibro']",
-        "value": "value",
+        "field": "value",
         "single": true
     },
     "tituloLibro": {
         "query": "input[name='tituloLibro']",
-        "value": "value",
+        "field": "value",
         "single": true
     },
     "produccion": {
         "query": "input[name='produccion']",
-        "value": "value",
+        "field": "value",
         "single": true
     },
     "isbn": {
         "query": "input[name='isbn']",
-        "value": "value",
+        "field": "value",
         "single": true
     },
     "idioma": {
         "query": "select[name='idioma']",
-        "value": "value",
+        "field": "value",
         "single": true
     },
     "volumen": {
         "query": "input[name='volumen']",
-        "value": "value",
+        "field": "value",
         "single": true
     },
     "tomo": {
         "query": "input[name='tomo']",
-        "value": "value",
+        "field": "value",
         "single": true
     },
     "numero": {
         "query": "input[name='numero']",
-        "value": "value",
+        "field": "value",
         "single": true
     },
     "totalPaginasLibro": {
         "query": "input[name='totalPaginasLibro']",
-        "value": "value",
+        "field": "value",
         "single": true
     },
     "paginaInicial": {
         "query": "input[name='paginaInicial']",
-        "value": "value",
+        "field": "value",
         "single": true
     },
     "paginaFinal": {
         "query": "input[name='paginaFinal']",
-        "value": "value",
+        "field": "value",
         "single": true
     },
     "publicado": {
-        "query": "input[name='publicado']:checked",
-        "value": "value",
-        "single": true
+        "query": ":not(*)",
+        "field": "value",
+        "callback": {
+            "export": "getRadioValue",
+            "import": "setRadioValue"
+        },
+        "params": {
+            "export": ["input[name='publicado']"],
+            "import": ["input[name='publicado']"]
+        },
+        "single": false
     },
     "referato": {
-        "query": "input[name='referato']:checked",
-        "value": "value",
-        "single": true
+        "query": ":not(*)",
+        "field": "value",
+        "callback": {
+            "export": "getRadioValue",
+            "import": "setRadioValue"
+        },
+        "params": {
+            "export": ["input[name='referato']"],
+            "import": ["input[name='referato']"]
+        },
+        "single": false
     },
     "pais": {
         "query": "select[name='pais']",
-        "value": "value",
+        "field": "value",
         "single": true
     },
     "lugarEdicion": {
         "query": "input[name='lugarEdicion']",
-        "value": "value",
+        "field": "value",
         "single": true
     },
     "editorial": {
         "query": "input[name='editorial']",
-        "value": "value",
+        "field": "value",
         "single": true
     },
     "anioPublica": {
         "query": "input[name='anioPublica']",
-        "value": "value",
+        "field": "value",
         "single": true
     },
     "tipoSoporteChecked1": {
         "query": "input[name='tipoSoporteChecked'][value='1']",
-        "value": "checked",
+        "field": "checked",
         "single": true
     },
     "tipoSoporteChecked2": {
         "query": "input[name='tipoSoporteChecked'][value='2']",
-        "value": "checked",
+        "field": "checked",
         "single": true
     },
     "web": {
         "query": "input[name='web']",
-        "value": "value",
+        "field": "value",
         "single": true
     },
     "isAutor": {
         "query": "input[name='isAutor']",
-        "value": "checked",
+        "field": "checked",
         "single": true
     },
     "isEditor": {
         "query": "input[name='isEditor']",
-        "value": "checked",
+        "field": "checked",
         "single": true
     },
     "isRevisor": {
         "query": "input[name='isRevisor']",
-        "value": "checked",
+        "field": "checked",
         "single": true
     },
     "autorTable": {
         "query": "#autorTable tr",
-        "callback": "getAffiliations",
-        "params": ["autor"],
+        "callback": {
+          "export": "getAffiliations",
+          "import": "setAffiliations"
+        },
+        "params": {
+          "export": ["autor"],
+          "import": ["autor"]
+        },
         "single": false
     },
     "compiladorTable": {
         "query": "#compiladorTable tr",
-        "callback": "getAffiliations",
-        "params": ["compilador"],
+        "callback": {
+          "export": "getAffiliations",
+          "import": "setAffiliations"
+        },
+        "params": {
+          "export": ["compilador"],
+          "import": ["compilador"]
+        },
         "single": false
     },
     "palabraTable": {
         "query": "#palabraTable input[name='palabraLabel']",
-        "callback": "getKeywords",
-        "params": [],
+        "callback": {
+          "export": "getKeywords",
+          "import": "setKeywords"
+        },
+        "params": {
+          "export": [],
+          "import": []
+        },
         "single": false
     },
     "hdnresumen": {
         "query": "textarea[name='hdnresumen']",
-        "value": "value",
+        "field": "value",
         "single": true
     },
     "disciplinarTable": {
         "query": ":not(*)",
-        "callback": "getDisciplinar",
-        "params": [
-          "select[name='campo_0']",
-          "select[name='campo_0_0']"
-        ],
+        "callback": {
+          "export": "getDisciplinar",
+          "import": "setDisciplinar"
+        },
+        "params": {
+          "export": [
+            "select[name='campo_0']",
+            "select[name='campo_0_0']"
+          ],
+          "import": [
+            "select[name='campo_0']",
+            "select[name='campo_0_0']"
+          ]
+        },
         "single": false
     }
 }

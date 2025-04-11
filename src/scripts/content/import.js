@@ -10,10 +10,10 @@ function createImportButton(pubType) {
     importButton.style.right = "5";
     switch (pubType) {
         case "bcoProduccionListaPublicacionCongreso":
-            importButton.onclick = () => loadFile(importConicetCongress);
+            importButton.onclick = () => loadFile(importConicet, 'congress');
             break;
         case "bcoProduccionListaPublicacionCapituloLibro":
-            importButton.onclick = () => loadFile(importConicetChatper);
+            importButton.onclick = () => loadFile(importConicet, 'chapters');
             break;
         case "bcoPrecargarArticulo":
             importButton.onclick = () => loadFile(importConicetJournal);
@@ -24,142 +24,29 @@ function createImportButton(pubType) {
     return importButton;
 }
 
-function importConicetChatper(conicetDict) {
-    let tipoParteLibro = document.getElementsByName("tipoParteLibro")[0];
-    tipoParteLibro.value = conicetDict["tipoParteLibro"];
-    let tituloLibro = document.getElementsByName("tituloLibro")[0];
-    tituloLibro.value = conicetDict["tituloLibro"];
-    let produccion = document.getElementsByName("produccion")[0];
-    produccion.value = conicetDict["produccion"];
-    let isbn = document.getElementsByName("isbn")[0];
-    isbn.value = conicetDict["isbn"];
-    let idioma = document.getElementsByName("idioma")[0];
-    idioma.value = conicetDict["idioma"];
-    let volumen = document.getElementsByName("volumen")[0];
-    volumen.value = conicetDict["volumen"];
-    let tomo = document.getElementsByName("tomo")[0];
-    tomo.value = conicetDict["tomo"];
-    let numero = document.getElementsByName("numero")[0];
-    numero.value = conicetDict["numero"];
-    let totalPaginasLibro = document.getElementsByName("totalPaginasLibro")[0];
-    totalPaginasLibro.value = conicetDict["totalPaginasLibro"];
-    let paginaInicial = document.getElementsByName("paginaInicial")[0];
-    paginaInicial.value = conicetDict["paginaInicial"];
-    let paginaFinal = document.getElementsByName("paginaFinal")[0];
-    paginaFinal.value = conicetDict["paginaFinal"];
-    document.querySelector(`input[name="publicado"][value="${conicetDict["publicado"]}"]`).checked = true;
-    document.querySelector(`input[name="referato"][value="${conicetDict["referato"]}"]`).checked = true;
-    let pais = document.getElementsByName("pais")[0];
-    pais.value = conicetDict["pais"];
-    let lugarEdicion = document.getElementsByName("lugarEdicion")[0];
-    lugarEdicion.value = conicetDict["lugarEdicion"];
-    let editorial = document.getElementsByName("editorial")[0];
-    editorial.value = conicetDict["editorial"];
-    let anioPublica = document.getElementsByName("anioPublica")[0];
-    anioPublica.value = conicetDict["anioPublica"];
-    document.getElementsByName("tipoSoporteChecked")[0].checked = conicetDict["tipoSoporteChecked1"];
-    document.getElementsByName("tipoSoporteChecked")[1].checked = conicetDict["tipoSoporteChecked2"];
-    let web = document.getElementsByName("web")[0];
-    web.value = conicetDict["web"];
-    document.getElementsByName("isAutor")[0].checked = conicetDict["isAutor"];
-    document.getElementsByName("isEditor")[0].checked = conicetDict["isEditor"];
-    document.getElementsByName("isRevisor")[0].checked = conicetDict["isRevisor"];
-    let autorTable = conicetDict["autorTable"];
-    setAffiliations(autorTable, "autor");
-    let compiladorTable = conicetDict["compiladorTable"];
-    setAffiliations(compiladorTable, "compilador");
-    let disciplinarTable = conicetDict["disciplinarTable"];
-    setDisciplinar(disciplinarTable);
-    let palabraTable = conicetDict["palabraTable"];
-    setKeywords(palabraTable);
-    let hdnresumen = document.getElementsByName("hdnresumen")[0];
-    hdnresumen.value = conicetDict["hdnresumen"];
-    decode(conicetDict["fullTextBase64"], conicetDict["produccion"]);
+async function importConicet(conicetDict, formatType) {
+    try {
+        const url = chrome.runtime.getURL(`format/${formatType}.json`);
+        const response = await fetch(url);
+        const fieldMapping = await response.json();
+
+        Object.entries(fieldMapping).forEach(([k, v]) => {
+            // console.log(`${k}: ${v.query}`);
+            if (v.single) {
+                document.querySelector(v.query)[v.field] = conicetDict[k]
+            } else {
+                window[v.callback.import](conicetDict[k], ...(v.params.import || []));
+            }
+        });
+
+        decode(conicetDict["fullTextBase64"], conicetDict["produccion"]);
+    } catch (error) {
+        console.error("Error loading or parsing JSON:", error);
+    }
 }
 
 function importConicetJournal(conicetDict) {
     alert("Esta función aún no está implementada. Próximamente disponible.");
-}
-
-function importConicetCongress(conicetDict) {
-    let tipoTrabajo = document.getElementsByName("tipoTrabajo")[0];
-    tipoTrabajo.value = conicetDict["tipoTrabajo"];
-    let produccion = document.getElementsByName("produccion")[0];
-    produccion.value = conicetDict["produccion"];
-    let idioma = document.getElementsByName("idioma")[0];
-    idioma.value = conicetDict["idioma"];
-    let tipoPublicacion = document.getElementsByName("tipoPublicacion")[0];
-    tipoPublicacion.value = conicetDict["tipoPublicacion"];
-    let tituloPublicacion = document.getElementsByName("tituloPublicacion")[0];
-    tituloPublicacion.value = conicetDict["tituloPublicacion"];
-    let issnIsbn = document.getElementsByName("issnIsbn")[0];
-    issnIsbn.value = conicetDict["issnIsbn"];
-    let paisEdicion = document.getElementsByName("paisEdicion")[0];
-    paisEdicion.value = conicetDict["paisEdicion"];
-    let lugarPublicacion = document.getElementsByName("lugarPublicacion")[0];
-    lugarPublicacion.value = conicetDict["lugarPublicacion"];
-    let editorial = document.getElementsByName("editorial")[0];
-    editorial.value = conicetDict["editorial"];
-    let anioPublica = document.getElementsByName("anioPublica")[0];
-    anioPublica.value = conicetDict["anioPublica"];
-    let tipoSoporteChecked1 = document.getElementsByName("tipoSoporteChecked")[0];
-    tipoSoporteChecked1.checked = conicetDict["tipoSoporteChecked1"];
-    let tipoSoporteChecked2 = document.getElementsByName("tipoSoporteChecked")[1];
-    tipoSoporteChecked2.checked = conicetDict["tipoSoporteChecked2"];
-    let web = document.getElementsByName("web")[0];
-    web.value = conicetDict["web"];
-    let reunionCientifica = document.getElementsByName("reunionCientifica")[0];
-    reunionCientifica.value = conicetDict["reunionCientifica"];
-    let tipoReunion = document.getElementsByName("tipoReunion")[0];
-    tipoReunion.value = conicetDict["tipoReunion"];
-    let alcanceNacional = document.getElementsByName("alcanceNacional")[0];
-    alcanceNacional.checked = conicetDict["alcanceNacional"];
-    let alcanceInternacional = document.getElementsByName("alcanceInternacional")[0];
-    alcanceInternacional.checked = conicetDict["alcanceInternacional"];
-    let paisEvento = document.getElementsByName("paisEvento")[0];
-    paisEvento.value = conicetDict["paisEvento"];
-    let lugarReunion = document.getElementsByName("lugarReunion")[0];
-    lugarReunion.value = conicetDict["lugarReunion"];
-    let fechaReunion = document.getElementsByName("fechaReunion")[0];
-    fechaReunion.value = conicetDict["fechaReunion"];
-    let institucionOrganizadora = document.getElementsByName("institucionOrganizadora")[0];
-    institucionOrganizadora.value = conicetDict["institucionOrganizadora"];
-    let autorTable = conicetDict["autorTable"];
-    setAffiliations(autorTable, "autor");
-    let disciplinarTable = conicetDict["disciplinarTable"];
-    setDisciplinar(disciplinarTable);
-    let palabraTable = conicetDict["palabraTable"];
-    setKeywords(palabraTable);
-    let hdnresumen = document.getElementsByName("hdnresumen")[0];
-    hdnresumen.value = conicetDict["hdnresumen"];
-    decode(conicetDict["fullTextBase64"], conicetDict["produccion"]);
-}
-
-function loadFile(callback) {
-    let fileInput = document.createElement("input");
-    fileInput.type = "file";
-    fileInput.id = "file_input";
-    fileInput.accept = ".json";
-    fileInput.style.display = "none";
-
-    fileInput.addEventListener("change", function (e) {
-        const file = e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function (event) {
-                try {
-                    conicetDict = JSON.parse(event.target.result);
-                    callback(conicetDict);
-                } catch (error) {
-                    console.error("Error al parsear el JSON:", error);
-                }
-            };
-
-            reader.readAsText(file);
-        }
-    });
-
-    fileInput.click();
 }
 
 function setAffiliations(entityTable, entityType) {
@@ -208,14 +95,20 @@ function setAffiliations(entityTable, entityType) {
     });
 }
 
-function setDisciplinar(disciplinarTable) {
+function setRadioValue(value, query) {
+    document.querySelectorAll(query).forEach(el => {
+        el.checked = (el.value === value);
+    });
+}
+
+function setDisciplinar(disciplinarTable, query_1, query_2) {
     let [text_0, value_0] = disciplinarTable[0].match(/(.+) \{(\d+)\}/).slice(1);
     let [text_0_0, value_0_0] = disciplinarTable[1].match(/(.+) \{(\d+)\}/).slice(1);
-    let campo_0 = document.getElementsByName("campo_0")[0];
+    let campo_0 = document.querySelector(query_1);
     campo_0.value = value_0;
     campo_0.dispatchEvent(new Event("change"));
     setTimeout(() => {
-        let campo_0_0 = document.getElementsByName("campo_0_0")[0];
+        let campo_0_0 = document.querySelector(query_2);
         campo_0_0.value = value_0_0;
         campo_0_0.dispatchEvent(new Event("change"));
     }, 1000);
@@ -250,6 +143,33 @@ function decode(fullTextBase64, fileName) {
     const dataTransfer = new DataTransfer();
     dataTransfer.items.add(file);
     inputFile.files = dataTransfer.files;
+}
+
+function loadFile(callback, formatType) {
+    let fileInput = document.createElement("input");
+    fileInput.type = "file";
+    fileInput.id = "file_input";
+    fileInput.accept = ".json";
+    fileInput.style.display = "none";
+
+    fileInput.addEventListener("change", function (e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (event) {
+                try {
+                    conicetDict = JSON.parse(event.target.result);
+                    callback(conicetDict, formatType);
+                } catch (error) {
+                    console.error("Error loading or parsing JSON:", error);
+                }
+            };
+
+            reader.readAsText(file);
+        }
+    });
+
+    fileInput.click();
 }
 
 globalThis.createImportButton = createImportButton;
