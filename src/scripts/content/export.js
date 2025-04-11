@@ -7,10 +7,10 @@ function createExportButton(pubType) {
     exportButton.style.backgroundColor = "#ffd000";
     switch (pubType) {
         case "bcoProduccionListaPublicacionCongreso":
-            exportButton.onclick = () => exportConicet('congress');
+            exportButton.onclick = () => exportConicet("congress");
             break;
         case "bcoProduccionListaPublicacionCapituloLibro":
-            exportButton.onclick = () => exportConicet('chapters');
+            exportButton.onclick = () => exportConicet("chapters");
             break;
         case "bcoProduccionArticuloPublicacion":
             exportButton.onclick = () => exportConicetJournal();
@@ -38,8 +38,8 @@ async function exportConicet(formatType) {
         });
 
         const linkFullText = document.querySelector('a[href*="archivosAdjuntos.do"]');
-        const baseUrl = window.location.href.split('/').slice(0, 4).join('/');
-        const downloadUrl = `${baseUrl}/${linkFullText.getAttribute('href')}`;
+        const baseUrl = window.location.href.split("/").slice(0, 4).join("/");
+        const downloadUrl = `${baseUrl}/${linkFullText.getAttribute("href")}`;
         conicetDict.fullTextBase64 = await encode(downloadUrl);
 
         const json = JSON.stringify(conicetDict, null, 4);
@@ -78,7 +78,6 @@ function getAffiliations(organizacionTable, entityType) {
     return authorAffiliations;
 }
 
-
 function getRadioValue(dummy_arg, query) {
     const selected = document.querySelector(`${query}:checked`);
     return selected ? selected.value : "";
@@ -109,8 +108,8 @@ async function encode(downloadUrl) {
         const blob = await response.blob();
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
-            reader.onloadend = function() {
-                const base64 = reader.result.split(',')[1]; // Remove the Base64 prefix
+            reader.onloadend = function () {
+                const base64 = reader.result.split(",")[1]; // Remove the Base64 prefix
                 resolve(base64);
             };
             reader.onerror = reject;

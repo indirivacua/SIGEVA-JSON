@@ -10,10 +10,10 @@ function createImportButton(pubType) {
     importButton.style.right = "5";
     switch (pubType) {
         case "bcoProduccionListaPublicacionCongreso":
-            importButton.onclick = () => loadFile(importConicet, 'congress');
+            importButton.onclick = () => loadFile(importConicet, "congress");
             break;
         case "bcoProduccionListaPublicacionCapituloLibro":
-            importButton.onclick = () => loadFile(importConicet, 'chapters');
+            importButton.onclick = () => loadFile(importConicet, "chapters");
             break;
         case "bcoPrecargarArticulo":
             importButton.onclick = () => loadFile(importConicetJournal);
@@ -33,7 +33,7 @@ async function importConicet(conicetDict, formatType) {
         Object.entries(fieldMapping).forEach(([k, v]) => {
             // console.log(`${k}: ${v.query}`);
             if (v.single) {
-                document.querySelector(v.query)[v.field] = conicetDict[k]
+                document.querySelector(v.query)[v.field] = conicetDict[k];
             } else {
                 window[v.callback.import](conicetDict[k], ...(v.params.import || []));
             }
@@ -96,8 +96,8 @@ function setAffiliations(entityTable, entityType) {
 }
 
 function setRadioValue(value, query) {
-    document.querySelectorAll(query).forEach(el => {
-        el.checked = (el.value === value);
+    document.querySelectorAll(query).forEach((el) => {
+        el.checked = el.value === value;
     });
 }
 
