@@ -43,7 +43,7 @@ async function exportConicet(formatType) {
         conicetDict.fullTextBase64 = await encode(downloadUrl);
 
         const json = JSON.stringify(conicetDict, null, 4);
-        downloadFile(json, `${conicetDict.produccion}.json`, "application/json");
+        downloadFile(json, `[${formatType.toUpperCase()}] ${conicetDict.produccion}.json`, "application/json");
     } catch (error) {
         console.error("Error loading or parsing JSON:", error);
     }
