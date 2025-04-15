@@ -10,7 +10,7 @@ La extensión fue probada solo en navegadores basados en Chromium, igual deberí
     <a href="https://chromewebstore.google.com/detail/kgbfmcnmibhkakpepfcmoolakpdmpcjp"><img src="releases/SVG (with border).svg" alt="Get Copy-n-Paste for Chromium" height="75px"></a>
 </p>
 
-1. Descargá el último [release](https://codeload.github.com/indirivacua/SIGEVA-JSON/zip/refs/heads/main) del paquete de la extensión y extraélo.
+1. Descargá el último [release](https://github.com/indirivacua/SIGEVA-JSON/releases) del paquete de la extensión y extraélo.
 
 2. Accedé a `chrome://extensions`. Activá la opción **Modo de desarrollador** (esquina superior derecha).
 
