@@ -8,19 +8,7 @@ function createImportButton(pubType) {
     importButton.style.position = "absolute";
     importButton.style.top = "1";
     importButton.style.right = "5";
-    switch (pubType) {
-        case "bcoProduccionListaPublicacionCongreso":
-            importButton.onclick = () => loadFile(importConicet, "congress");
-            break;
-        case "bcoProduccionListaPublicacionCapituloLibro":
-            importButton.onclick = () => loadFile(importConicet, "chapters");
-            break;
-        case "bcoPrecargarArticulo":
-            importButton.onclick = () => loadFile(importConicet, "articles");
-            break;
-        default:
-            break;
-    }
+    importButton.onclick = () => loadFile(importConicet, pubType);
     return importButton;
 }
 

@@ -5,19 +5,7 @@ function createExportButton(pubType) {
     exportButton.value = "Exportar JSON";
     exportButton.className = "CformBoton";
     exportButton.style.backgroundColor = "#ffd000";
-    switch (pubType) {
-        case "bcoProduccionListaPublicacionCongreso":
-            exportButton.onclick = () => exportConicet("congress");
-            break;
-        case "bcoProduccionListaPublicacionCapituloLibro":
-            exportButton.onclick = () => exportConicet("chapters");
-            break;
-        case "bcoProduccionArticuloPublicacion":
-            exportButton.onclick = () => exportConicet("articles");
-            break;
-        default:
-            break;
-    }
+    exportButton.onclick = () => exportConicet(pubType);
     return exportButton;
 }
 

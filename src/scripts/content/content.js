@@ -1,8 +1,8 @@
 currentUrl = window.location.href;
-pubType = extractPublicationType(currentUrl);
+pubType = window.FINDEX[new URL(currentUrl).pathname];
 
 let datosBasicosTd = document.querySelector('td.CformRowHeader');
-if (datosBasicosTd
+if (datosBasicosTd && pubType !== undefined
     && !currentUrl.includes("action=Editar")) {
     let importButton = globalThis.createImportButton(pubType);
     datosBasicosTd.style.position = "relative"; // Necesario para la superposición
@@ -10,14 +10,9 @@ if (datosBasicosTd
 }
 
 let guardarButton = document.querySelector('input[value="Modificar"]');
-if (guardarButton
+if (guardarButton && pubType !== undefined
     && currentUrl.includes("action=Editar")) {
     exportButton = globalThis.createExportButton(pubType);
     guardarButton.parentNode.insertBefore(exportButton, guardarButton.nextSibling);
     guardarButton.insertAdjacentHTML("afterend", " &nbsp; ");
-}
-
-function extractPublicationType(url) {
-    let match = url.match(/\/([^\/]+)\.do/); // Captura la última palabra antes de ".do"
-    return match ? match[1] : null; // Devuelve la palabra encontrada o null si no hay coincidencia
 }
