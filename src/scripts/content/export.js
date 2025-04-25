@@ -1,5 +1,5 @@
 function createExportButton(pubType) {
-    let exportButton = document.createElement("input");
+    const exportButton = document.createElement("input");
     exportButton.type = "submit";
     exportButton.name = "btnExport";
     exportButton.value = "Exportar JSON";
@@ -15,7 +15,7 @@ async function exportConicet(formatType) {
         const response = await fetch(url);
         const fieldMapping = await response.json();
 
-        let conicetDict = {};
+        const conicetDict = {};
 
         Object.entries(fieldMapping).forEach(([k, v]) => {
             // console.log(`${k}: ${v.query}`);
@@ -38,22 +38,22 @@ async function exportConicet(formatType) {
 }
 
 function getAffiliations(organizacionTable, entityType) {
-    let authorAffiliations = {};
+    const authorAffiliations = {};
     for (let i = 0; i < organizacionTable.length; i++) {
-        let authorNameInput = organizacionTable[i].querySelector(`input[type="text"][name="${entityType}ParticipacionLabel"]`);
+        const authorNameInput = organizacionTable[i].querySelector(`input[type="text"][name="${entityType}ParticipacionLabel"]`);
         if (authorNameInput) {
-            let authorName = authorNameInput.value;
+            const authorName = authorNameInput.value;
             // Initialize the array for the author if not done yet
             if (!authorAffiliations[authorName]) {
                 authorAffiliations[authorName] = [];
             }
-            let organizacionLabels = organizacionTable[i].querySelectorAll(`input[type="hidden"][name="${entityType}OrganizacionLabel"]`);
-            let organizacionIds = organizacionTable[i].querySelectorAll(`input[type="hidden"][name="${entityType}OrganizacionId"]`);
+            const organizacionLabels = organizacionTable[i].querySelectorAll(`input[type="hidden"][name="${entityType}OrganizacionLabel"]`);
+            const organizacionIds = organizacionTable[i].querySelectorAll(`input[type="hidden"][name="${entityType}OrganizacionId"]`);
             // Iterate over all organizations for the current author
             for (let j = 0; j < organizacionLabels.length; j++) {
-                let organizacionLabel = organizacionLabels[j].value;
-                let organizacionId = organizacionIds[j].value;
-                let organizacionText = `${organizacionLabel} {${organizacionId}}`;
+                const organizacionLabel = organizacionLabels[j].value;
+                const organizacionId = organizacionIds[j].value;
+                const organizacionText = `${organizacionLabel} {${organizacionId}}`;
                 // Add the organization info to the author's array
                 authorAffiliations[authorName].push(organizacionText);
             }
@@ -68,10 +68,10 @@ function getRadioValue(dummy_arg, query) {
 }
 
 function getDisciplinar(dummy_arg, query_1, query_2) {
-    let campo_1 = document.querySelector(query_1);
-    let campo_2 = document.querySelector(query_2);
-    let text_1 = campo_1.options[campo_1.selectedIndex].text;
-    let text_2 = campo_2.options[campo_2.selectedIndex].text;
+    const campo_1 = document.querySelector(query_1);
+    const campo_2 = document.querySelector(query_2);
+    const text_1 = campo_1.options[campo_1.selectedIndex].text;
+    const text_2 = campo_2.options[campo_2.selectedIndex].text;
     return [
         `${text_1} {${campo_1.value}}`,
         `${text_2} {${campo_2.value}}`
@@ -79,7 +79,7 @@ function getDisciplinar(dummy_arg, query_1, query_2) {
 }
 
 function getKeywords(palabraTable) {
-    let keywords = [];
+    const keywords = [];
     for (let i = 0; i < palabraTable.length; i++) {
         keywords.push(palabraTable[i].value);
     }
@@ -106,9 +106,9 @@ async function encode(downloadUrl) {
 }
 
 function downloadFile(data, filename, type) {
-    let file = new Blob([data], { type: type });
-    let a = document.createElement("a");
-    let url = URL.createObjectURL(file);
+    const file = new Blob([data], { type: type });
+    const a = document.createElement("a");
+    const url = URL.createObjectURL(file);
     a.href = url;
     a.download = filename;
     document.body.appendChild(a);

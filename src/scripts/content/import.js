@@ -1,5 +1,5 @@
 function createImportButton(pubType) {
-    let importButton = document.createElement("input");
+    const importButton = document.createElement("input");
     importButton.type = "button";
     importButton.name = "btnImport";
     importButton.value = "Importar JSON";
@@ -9,6 +9,7 @@ function createImportButton(pubType) {
     importButton.style.top = "1";
     importButton.style.right = "5";
     importButton.onclick = () => loadFile(importConicet, pubType);
+    setupFileInputForFullText();
     return importButton;
 }
 
@@ -35,23 +36,23 @@ async function importConicet(conicetDict, formatType) {
 
 function setAffiliations(entityTable, entityType) {
     let entityParticipacionLabel = document.getElementsByName(`${entityType}ParticipacionLabel`);
-    let entityNuevo = document.getElementsByName(`${entityType}Nuevo`)[0];
+    const entityNuevo = document.getElementsByName(`${entityType}Nuevo`)[0];
     Object.keys(entityTable).forEach((entity, i) => {
         if (i >= entityParticipacionLabel.length) {
             entityNuevo.click();
             entityParticipacionLabel = document.getElementsByName(`${entityType}ParticipacionLabel`);
         }
         entityParticipacionLabel[i].value = entity;
-        let afiliaciones = entityTable[entity];
+        const afiliaciones = entityTable[entity];
         if (afiliaciones.length > 0) {
-            let entityTable = entityParticipacionLabel[i].closest("table").querySelector("tbody");
+            const entityTable = entityParticipacionLabel[i].closest("table").querySelector("tbody");
             afiliaciones.forEach((afiliacion) => {
-                let regex = /(.+?)\s\{(.+?)\}/;
-                let matches = afiliacion.match(regex);
+                const regex = /(.+?)\s\{(.+?)\}/;
+                const matches = afiliacion.match(regex);
                 if (matches) {
-                    let organizacion = matches[1].trim();
-                    let organizacionId = matches[2].trim();
-                    let nuevaFila = `
+                    const organizacion = matches[1].trim();
+                    const organizacionId = matches[2].trim();
+                    const nuevaFila = `
                     <tr class="odd">
                         <td colspan="2" style="width:500;border-top: 1px solid #888;">
                             <div>${organizacion}</div>
@@ -89,13 +90,13 @@ function setRadioValue(value, query) {
 }
 
 function setDisciplinar(disciplinarTable, query_1, query_2) {
-    let [text_0, value_0] = disciplinarTable[0].match(/(.+) \{(\d+)\}/).slice(1);
-    let [text_0_0, value_0_0] = disciplinarTable[1].match(/(.+) \{(\d+)\}/).slice(1);
-    let campo_0 = document.querySelector(query_1);
+    const [text_0, value_0] = disciplinarTable[0].match(/(.+) \{(\d+)\}/).slice(1);
+    const [text_0_0, value_0_0] = disciplinarTable[1].match(/(.+) \{(\d+)\}/).slice(1);
+    const campo_0 = document.querySelector(query_1);
     campo_0.value = value_0;
     campo_0.dispatchEvent(new Event("change"));
     setTimeout(() => {
-        let campo_0_0 = document.querySelector(query_2);
+        const campo_0_0 = document.querySelector(query_2);
         campo_0_0.value = value_0_0;
         campo_0_0.dispatchEvent(new Event("change"));
     }, 1000);
@@ -103,7 +104,7 @@ function setDisciplinar(disciplinarTable, query_1, query_2) {
 
 function setKeywords(palabraTable) {
     let palabraLabel = document.getElementsByName("palabraLabel");
-    let palabraNuevo = document.getElementsByName("palabraNuevo")[0];
+    const palabraNuevo = document.getElementsByName("palabraNuevo")[0];
     for (let i = 0; i < palabraTable.length; i++) {
         if (i >= palabraLabel.length) {
             palabraNuevo.click();
@@ -126,14 +127,14 @@ function decode(fullTextBase64, fileName) {
     const fileBlob = new Blob([byteArray], { type: "application/pdf" });
     const file = new File([fileBlob], `${fileName}.pdf`, { type: "application/pdf" });
 
-    const inputFile = document.querySelector('input[name="theFile"]');
+    const fileInput = document.querySelector('input[name="theFile"]');
     const dataTransfer = new DataTransfer();
     dataTransfer.items.add(file);
-    inputFile.files = dataTransfer.files;
+    fileInput.files = dataTransfer.files;
 }
 
 function loadFile(callback, formatType) {
-    let fileInput = document.createElement("input");
+    const fileInput = document.createElement("input");
     fileInput.type = "file";
     fileInput.id = "file_input";
     fileInput.accept = ".json";
@@ -157,6 +158,24 @@ function loadFile(callback, formatType) {
     });
 
     fileInput.click();
+}
+
+function setupFileInputForFullText() {
+    const fileInput = document.querySelector('input[name="theFile"]');
+    if (!fileInput) return;
+
+    fileInput.addEventListener("change", async function (e) {
+        const file = e.target.files[0];
+        if (file && file.name.endsWith(".json")) {
+            try {
+                const text = await file.text();
+                const conicetDict = JSON.parse(text);
+                decode(conicetDict["fullTextBase64"], conicetDict["produccion"]);
+            } catch (error) {
+                console.error("Error loading or parsing JSON:", error);
+            }
+        }
+    });
 }
 
 globalThis.createImportButton = createImportButton;
