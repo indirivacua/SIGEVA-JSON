@@ -23,9 +23,10 @@ Funciona para SIGEVA CONICET, UNLP y CVAR. Escribí un [issue](https://github.co
 
 3. Hacé click en **Cargar extensión sin empaquetar** y seleccioná la carpeta donde extrajiste la extensión.
 
-> La extensión fue probada solo en navegadores basados en Chromium, igual debería funcionar (mínimanente) en Firefox también.
-
 </details>
+
+> [!NOTE]
+> La extensión fue probada solo en navegadores basados en Chromium.
 
 ## Uso
 
