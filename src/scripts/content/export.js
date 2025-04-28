@@ -2,7 +2,7 @@ function createExportButton(pubType) {
     const exportButton = document.createElement("input");
     exportButton.type = "submit";
     exportButton.name = "btnExport";
-    exportButton.value = "Exportar JSON";
+    exportButton.value = "Exportar Artículo";
     exportButton.className = "CformBoton";
     exportButton.style.backgroundColor = "#ffd000";
     exportButton.onclick = () => exportConicet(pubType);
