@@ -2,7 +2,7 @@ function createImportButton(pubType) {
     const importButton = document.createElement("input");
     importButton.type = "button";
     importButton.name = "btnImport";
-    importButton.value = "Importar JSON";
+    importButton.value = "Importar Artículo";
     importButton.className = "CformBoton";
     importButton.style.backgroundColor = "#ffd000";
     importButton.style.position = "absolute";
