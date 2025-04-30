@@ -137,7 +137,7 @@ function loadFile(callback, formatType) {
     const fileInput = document.createElement("input");
     fileInput.type = "file";
     fileInput.id = "file_input";
-    fileInput.accept = ".json";
+    fileInput.accept = ".sigeva";
     fileInput.style.display = "none";
 
     fileInput.addEventListener("change", function (e) {
@@ -166,7 +166,7 @@ function setupFileInputForFullText() {
 
     fileInput.addEventListener("change", async function (e) {
         const file = e.target.files[0];
-        if (file && file.name.endsWith(".json")) {
+        if (file && file.name.endsWith(".sigeva")) {
             try {
                 const text = await file.text();
                 const conicetDict = JSON.parse(text);

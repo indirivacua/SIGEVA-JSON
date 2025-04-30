@@ -1,6 +1,6 @@
 window.FINDEX = {
-    "/eva/bcoProduccionArticuloPublicacion.do": "articles",
-    "/eva/bcoPrecargarArticulo.do": "articles",
-    "/eva/bcoProduccionListaPublicacionCapituloLibro.do": "chapters",
-    "/eva/bcoProduccionListaPublicacionCongreso.do": "congress",
+    "/eva/bcoProduccionArticuloPublicacion.do": "revista",
+    "/eva/bcoPrecargarArticulo.do": "revista",
+    "/eva/bcoProduccionListaPublicacionCapituloLibro.do": "capitulo",
+    "/eva/bcoProduccionListaPublicacionCongreso.do": "congreso",
 };

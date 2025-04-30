@@ -9,7 +9,7 @@
        "48": "icons/icon48.png",
        "128": "icons/icon128.png"
    },
-   "version": "2.2.1",
+   "version": "2.2.2",
    "permissions": ["activeTab"],
    "content_scripts": [
        {
@@ -47,9 +47,9 @@
                "https://cvar.sicytar.mincyt.gob.ar/*"
            ],
            "resources": [
-               "format/congress.json",
-               "format/chapters.json",
-               "format/articles.json"
+               "format/congreso.json",
+               "format/capitulo.json",
+               "format/revista.json"
            ]
        }
    ]
