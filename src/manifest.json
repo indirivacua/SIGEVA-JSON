@@ -1,57 +1,63 @@
 {
-   "manifest_version": 3,
-   "name": "SIGEVA Intercambio Global Electrónico de Vanguardia para Artículos",
-   "homepage_url": "https://github.com/indirivacua/SIGEVA-JSON",
-   "description": "Plugin para importar y exportar trabajos científicos en SIGEVA a partir de un JSON.",
-   "icons": {
-       "16": "icons/icon16.png",
-       "32": "icons/icon32.png",
-       "48": "icons/icon48.png",
-       "128": "icons/icon128.png"
-   },
-   "version": "2.3.0",
-   "permissions": ["activeTab", "storage"],
-   "options_page": "options/options.html",
-   "content_scripts": [
-       {
-           "matches": [
-               "https://sigeva.unlp.edu.ar/*",
-               "https://si.conicet.gov.ar/*",
-               "https://cvar.sicytar.mincyt.gob.ar/*"
-           ],
-           "js": [
-               "scripts/content/export.js",
-               "scripts/content/import.js",
-               "scripts/content/findex.js",
-               "scripts/content/content.js"
-           ]
-       }
-   ],
-   "action": {
-       "default_icon": {
-          "16": "icons/icon16.png",
-          "32": "icons/icon32.png",
-          "48": "icons/icon48.png",
-          "128": "icons/icon128.png"
-       }
-   },
-   "host_permissions": [
-       "https://sigeva.unlp.edu.ar/*",
-       "https://si.conicet.gov.ar/*",
-       "https://cvar.sicytar.mincyt.gob.ar/*"
-   ],
-   "web_accessible_resources": [
-       {
-           "matches": [
-               "https://sigeva.unlp.edu.ar/*",
-               "https://si.conicet.gov.ar/*",
-               "https://cvar.sicytar.mincyt.gob.ar/*"
-           ],
-           "resources": [
-               "format/congreso.json",
-               "format/capitulo.json",
-               "format/revista.json"
-           ]
-       }
-   ]
+    "manifest_version": 3,
+    "name": "SIGEVA Intercambio Global Electrónico de Vanguardia para Artículos",
+    "homepage_url": "https://github.com/indirivacua/SIGEVA-JSON",
+    "description": "Plugin para importar y exportar trabajos científicos en SIGEVA a partir de un JSON.",
+    "icons": {
+        "16": "icons/icon16.png",
+        "32": "icons/icon32.png",
+        "48": "icons/icon48.png",
+        "128": "icons/icon128.png"
+    },
+    "version": "2.3.2",
+    "permissions": [
+        "activeTab",
+        "storage"
+    ],
+    "options_page": "options/options.html",
+    "content_scripts": [
+        {
+            "matches": [
+                "https://sigeva.unlp.edu.ar/*",
+                "https://si.conicet.gov.ar/*",
+                "https://cvar.sicytar.mincyt.gob.ar/*",
+                "https://sigeva.rec.uba.ar/*"
+            ],
+            "js": [
+                "scripts/content/export.js",
+                "scripts/content/import.js",
+                "scripts/content/findex.js",
+                "scripts/content/content.js"
+            ]
+        }
+    ],
+    "action": {
+        "default_icon": {
+            "16": "icons/icon16.png",
+            "32": "icons/icon32.png",
+            "48": "icons/icon48.png",
+            "128": "icons/icon128.png"
+        }
+    },
+    "host_permissions": [
+        "https://sigeva.unlp.edu.ar/*",
+        "https://si.conicet.gov.ar/*",
+        "https://cvar.sicytar.mincyt.gob.ar/*",
+        "https://sigeva.rec.uba.ar/*"
+    ],
+    "web_accessible_resources": [
+        {
+            "matches": [
+                "https://sigeva.unlp.edu.ar/*",
+                "https://si.conicet.gov.ar/*",
+                "https://cvar.sicytar.mincyt.gob.ar/*",
+                "https://sigeva.rec.uba.ar/*"
+            ],
+            "resources": [
+                "format/congreso.json",
+                "format/capitulo.json",
+                "format/revista.json"
+            ]
+        }
+    ]
 }
