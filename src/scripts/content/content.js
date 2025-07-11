@@ -15,3 +15,17 @@ if (guardarButton && pubType !== undefined) {
     guardarButton.parentNode.insertBefore(exportButton, guardarButton.nextSibling);
     guardarButton.insertAdjacentHTML("afterend", " &nbsp; ");
 }
+
+chrome.storage.local.get(
+    { institution: "1", password: "", autosubmit: true },
+    (config) => {
+        const hasValidationError = document.querySelector('.form-section-errors.alert-danger');
+        if (hasValidationError || config.password === "") return;
+        const labels = document.getElementsByClassName("CformNombre");
+        if (!labels.length || labels[0].textContent !== "Institución:") return;
+        document.getElementsByName("organizacion")[0].value = config.institution;
+        const passwordField = document.getElementsByName("contrasenia")[0];
+        passwordField.value = config.password;
+        config.autosubmit && document.getElementsByName("btnSubmit")[0].click();
+    },
+);
