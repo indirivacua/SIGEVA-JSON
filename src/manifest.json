@@ -9,7 +9,7 @@
         "48": "icons/icon48.png",
         "128": "icons/icon128.png"
     },
-    "version": "2.3.2",
+    "version": "2.3.3",
     "permissions": [
         "activeTab",
         "storage"
@@ -28,6 +28,9 @@
                 "scripts/content/import.js",
                 "scripts/content/findex.js",
                 "scripts/content/content.js"
+            ],
+            "css": [
+                "styles/content/content.css"
             ]
         }
     ],

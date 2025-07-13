@@ -6,9 +6,7 @@ function saveOptions() {
     chrome.storage.local.set({ institution, password, autosubmit }, () => {
         const status = document.getElementById("status");
         status.textContent = "Opciones guardadas.";
-        setTimeout(() => {
-            status.textContent = "";
-        }, 1000);
+        setTimeout(() => { status.textContent = ""; }, 1000);
     });
 }
 
