@@ -4,6 +4,9 @@ const pubType = window.FINDEX[new URL(currentUrl).pathname];
 const submitButtonQuery = 'input[type="submit"][name="btnSubmit"]';
 const hasPrecargaButton = [...document.querySelectorAll(submitButtonQuery)]
     .some(btn => btn.value.toLowerCase().includes("precarga"));
+const alertHighlightElement = q =>
+    (e => (alert(`PRESIONA: ${e.value?.toUpperCase()}`), e.scrollIntoView({block: "center"}), e.classList.add("highlight")))
+    (document.querySelector(q));
 
 const datosBasicosTd = document.querySelector('td.CformRowHeader');
 if (datosBasicosTd && pubType !== undefined
@@ -37,12 +40,3 @@ chrome.storage.local.get(
         config.autosubmit && document.getElementsByName("btnSubmit")[0].click();
     },
 );
-
-function alertHighlightElement(query) {
-    const element = document.querySelector(query);
-    element.scrollIntoView({ behavior: "smooth", block: "center" });
-    element.focus();
-    element.classList.add("attention-highlight");
-    alert(`PRESIONA: ${element.value.toUpperCase()}`)
-    setTimeout(() => { element.classList.remove("attention-highlight"); }, 2000);
-}
