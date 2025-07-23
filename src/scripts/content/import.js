@@ -19,6 +19,9 @@ async function importConicet(conicetDict, formatType) {
         const response = await fetch(url);
         const fieldMapping = await response.json();
 
+        document.querySelectorAll("input[name*='Borrar']")
+            .forEach(b => { b.click(); });
+
         Object.entries(fieldMapping).forEach(([k, v]) => {
             // console.log(`${k}: ${v.query}`);
             if (v.single) {
@@ -82,7 +85,7 @@ function setAffiliations(entityTable, entityType) {
 
 function setRadioValue(value, query) {
     document.querySelectorAll(query).forEach((el) => {
-        if (el.value === value) {
+        if (el.value === String(value)) {
             el.checked = true;
             el.dispatchEvent(new Event("change")); // Needed to dispatch 'seleccionarAutor(this);' in Journal Article
         }
