@@ -62,12 +62,12 @@ function getAffiliations(organizacionTable, entityType) {
     return authorAffiliations;
 }
 
-function getRadioValue(dummy_arg, query) {
+function getRadioValue(_, query) {
     const selected = document.querySelector(`${query}:checked`);
     return selected ? selected.value : "";
 }
 
-function getDisciplinar(dummy_arg, query_1, query_2) {
+function getDisciplinar(_, query_1, query_2) {
     const campo_1 = document.querySelector(query_1);
     const campo_2 = document.querySelector(query_2);
     const text_1 = campo_1.options[campo_1.selectedIndex].text;

@@ -181,4 +181,60 @@ function setupFileInputForFullText() {
     });
 }
 
+function levenshtein(a, b) {
+    const dp = Array(b.length + 1)
+        .fill(null)
+        .map(() => Array(a.length + 1).fill(0));
+
+    for (let i = 0; i <= b.length; i++) dp[i][0] = i;
+    for (let j = 0; j <= a.length; j++) dp[0][j] = j;
+
+    for (let i = 1; i <= b.length; i++) {
+        for (let j = 1; j <= a.length; j++) {
+            const cost = b[i - 1] === a[j - 1] ? 0 : 1;
+            dp[i][j] = Math.min(
+                dp[i - 1][j] + 1, // deletion
+                dp[i][j - 1] + 1, // insertion
+                dp[i - 1][j - 1] + cost, // substitution
+            );
+        }
+    }
+
+    return dp[b.length][a.length];
+}
+
+function normalizeName(name) {
+    return name
+        .normalize("NFD") // Decompose accents
+        .replace(/[\u0300-\u036f]/g, "") // Remove accent marks
+        .replace(/[^a-zA-Z\s]/g, "") // Remove punctuation
+        .toLowerCase() // Convert to lowercase
+        .trim() // Remove leading/trailing spaces
+        .split(/\s+/) // Split on any space
+        .sort() // Sort to handle "Name Surname" vs "Surname Name"
+        .join(" "); // Join back to string
+}
+
+function setRadioAutor(_, query) {
+    setRadioValue(
+        (() => {
+            const inputName = document.querySelector('div[id="persona"]');
+            const inputNorm = normalizeName(inputName.textContent);
+            const autorNames = [
+                ...document.querySelectorAll(
+                    "input[name='autorParticipacionLabel']",
+                ),
+            ].map((i) => i.value);
+            let nameMatch = null, distMin = Infinity;
+            for (const name of autorNames) {
+                const autorNorm = normalizeName(name);
+                const dist = levenshtein(inputNorm, autorNorm);
+                if (dist < distMin) [distMin, nameMatch] = [dist, name];
+            }
+            return autorNames.indexOf(nameMatch);
+        })(),
+        query,
+    );
+}
+
 globalThis.createImportButton = createImportButton;

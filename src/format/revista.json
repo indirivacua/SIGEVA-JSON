@@ -127,7 +127,7 @@
         "field": "value",
         "callback": {
             "export": "getRadioValue",
-            "import": "setRadioValue"
+            "import": "setRadioAutor"
         },
         "params": {
             "export": ["input[name='autorSel']"],
