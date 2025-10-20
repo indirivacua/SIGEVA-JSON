@@ -1,6 +1,6 @@
 function createExportButton(pubType) {
     const exportButton = document.createElement("input");
-    exportButton.type = "submit";
+    exportButton.type = "button";
     exportButton.name = "btnExport";
     exportButton.value = "Exportar Artículo";
     exportButton.className = "CformBoton";
