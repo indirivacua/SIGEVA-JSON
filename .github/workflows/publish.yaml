@@ -3,20 +3,30 @@ name: Publish
 on:
   push:
     tags:
-      - '*' 
+      - "*"
+
+permissions:
+  contents: read
 
 jobs:
-  build:
+  publish:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v2
-      - run:  cd src && zip -r ../releases/release.zip * && cd ..
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Create release zip
+        run: |
+          cd src
+          zip -r ../releases/release.zip .
+
       - name: Upload to Chrome Web Store
-        uses: mobilefirstllc/cws-publish@latest
+        uses: mobilefirstllc/cws-publish@v1
         with:
-          action: 'publish' 
+          action: publish
           client_id: ${{ secrets.CLIENT }}
           client_secret: ${{ secrets.SECRET }}
           refresh_token: ${{ secrets.TOKEN }}
           extension_id: ${{ secrets.EXTENSION_ID }}
-          zip_file: 'releases/release.zip'
+          zip_file: releases/release.zip
