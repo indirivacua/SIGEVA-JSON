@@ -8,6 +8,7 @@ La extensión permite **importar** y **exportar** datos fácilmente en formato J
 
 Funciona para SIGEVA CONICET, UNLP y CVAR. Escribí un [issue](https://github.com/indirivacua/SIGEVA-JSON/issues) si necesitás soporte para otro deploy de SIGEVA.
 
+Video tutorial: 
 [![Video Thumbnail Alt Text](https://img.youtube.com/vi/3E5GRlJDuTM/0.jpg)](https://www.youtube.com/watch?v=3E5GRlJDuTM)
 
 
