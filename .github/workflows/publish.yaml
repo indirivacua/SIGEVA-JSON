@@ -22,11 +22,11 @@ jobs:
           zip -r ../releases/release.zip .
 
       - name: Upload to Chrome Web Store
-        uses: mobilefirstllc/cws-publish@latest
+        uses: mnao305/chrome-extension-upload@v6.0.0
         with:
-          action: publish
-          client_id: ${{ secrets.CLIENT }}
-          client_secret: ${{ secrets.SECRET }}
-          refresh_token: ${{ secrets.TOKEN }}
-          extension_id: ${{ secrets.EXTENSION_ID }}
-          zip_file: releases/release.zip
+          file-path: releases/release.zip
+          extension-id: ${{ secrets.EXTENSION_ID }}
+          client-id: ${{ secrets.CLIENT }}
+          client-secret: ${{ secrets.SECRET }}
+          refresh-token: ${{ secrets.TOKEN }}
+          publish: true
