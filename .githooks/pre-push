@@ -1,0 +1,5 @@
+#!/bin/bash
+if git diff --quiet @{push} HEAD -- src/manifest.json 2>/dev/null; then
+  echo "manifest sin cambios, ¿subiste la versión? (--no-verify para saltar)"
+  exit 1
+fi
