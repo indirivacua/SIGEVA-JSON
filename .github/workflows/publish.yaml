@@ -22,7 +22,7 @@ jobs:
           zip -r ../releases/release.zip .
 
       - name: Upload to Chrome Web Store
-        uses: mobilefirstllc/cws-publish@v1
+        uses: mobilefirstllc/cws-publish@latest
         with:
           action: publish
           client_id: ${{ secrets.CLIENT }}
